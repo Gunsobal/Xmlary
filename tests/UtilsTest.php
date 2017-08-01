@@ -5,16 +5,12 @@ namespace Gunsobal\Xmlary;
 use PHPUnit_Framework_TestCase;
 
 /**
- * Corresponding test class to Utils class
- *
  * Unit tests for Utils
  */
 class UtilsTest extends PHPUnit_Framework_TestCase
 {
     /**
      * Checking for syntax error in Utils
-     *
-     * Simple check for typos and such
      */
     public function testIsThereAnySyntaxError(){
         $x = new Utils;
@@ -24,8 +20,6 @@ class UtilsTest extends PHPUnit_Framework_TestCase
 
     /**
      * Testing class_basename
-     *
-     * Assert function works as intended
      */
     public function testClassBasename(){
         $this->assertTrue(Utils::class_basename($this) == 'UtilsTest');
@@ -34,8 +28,6 @@ class UtilsTest extends PHPUnit_Framework_TestCase
 
     /**
      * Testing isStringKeyed
-     *
-     * Assert function works as intended
      */
     public function testIsStringKeyed(){
         $this->assertTrue(Utils::isStringKeyed(['key' => 'value']));

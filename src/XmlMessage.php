@@ -56,10 +56,6 @@ class XmlMessage
 
     /**
      * Convert this message to XML markup style string
-     *
-     * Calls whatever method is specified in the $_build property and builds an xml string with the $_name property as the root. 
-     * Uses Xmlify by default
-     *
      * @return string
      */ 
     public function toString(){
@@ -68,10 +64,6 @@ class XmlMessage
 
     /**
      * Convert this message to XML string
-     *
-     * Calls whatever method is specified in the $_build property and builds an xml string with the $_name property as the root. 
-     * Uses Xmlify by default
-     *
      * @return string Valid XML
      */ 
     public function toXml(){
@@ -80,9 +72,6 @@ class XmlMessage
 
     /**
      * Convert this message to DOMDocument
-     *
-     * Calls whatever method is specified in the $_build property and builds DOMDocument using Xmlify.
-     *
      * @return \DOMDocument
      */
      public function toDOM(){
@@ -90,10 +79,7 @@ class XmlMessage
      }
 
     /**
-     * Validate fields in $_data property
-     *
-     * Verifies all fields specified in paramter exist in $_data property or else raises an exception with a custom defined message
-     *
+     * Verify fields exist in $_data property
      * @param array $fields - Assoc array where each key represents a required field and value represents an error message
      */
     protected function validate($fields){

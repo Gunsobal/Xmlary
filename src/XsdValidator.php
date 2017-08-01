@@ -9,17 +9,14 @@ use Gunsobal\Xmlary\XmlParser;
 /**
  * XSD Validator
  *
- * Validates xml against an xsd schema
+ * Validates XML against an XSD schema
  *
  * @author Gunnar Baldursson
  */
 class XsdValidator
 {
     /**
-     * Validates XML against schema
-     *
-     * Uses Parser to create DOMDocument from XML and runs the schemaValidate method
-     *
+     * Validates XML against XSD schema
      * @param mixed $xml valid XML as string, SimpleXMLElement or DOMDocument
      * @param string $xsd Schema to validate
      * @return boolean

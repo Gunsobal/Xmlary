@@ -21,14 +21,9 @@ class Xmlify
 {
     /**
      * Convert associative array to DOMDocument
-     *
-     * Recursively builds a DOMDocument object from a string keyed array. 
-     * Each key becomes a node containing the corresponding value.
-     *
      * @param array $arr An array to convert into XML
      * @param string $version Version head on the XML document, default 1.0
      * @param string $encoding Encoding head on the XML document, default UTF-8
-     *
      * @return \DOMDocument
      */
     public static function xmlify_array($arr, $version = "1.0", $encoding = "UTF-8"){
@@ -44,13 +39,8 @@ class Xmlify
     
     /**
      * Convert associative array to string
-     *
-     * Recursively builds a xml markup style string from a string keyed array. 
-     * Each key becomes a node containing the corresponding value.
-     *
      * @param array $arr An array to convert into XML string
      * @param int $depth Tab indentation preceding first node, default 0
-     *
      * @return string
      */
     public static function stringify($arr, $depth = 0){
@@ -63,13 +53,8 @@ class Xmlify
 
     /**
      * Convert associative array to string with html special chars
-     *
-     * Recursively builds a xml markup style string from a string keyed array. 
-     * Each key becomes a node containing the corresponding value.
-     *
      * @param array $arr An array to convert into XML string
      * @param int $depth Tab indentation preceding first node, default 0
-     *
      * @return string
      */
     public static function stringify_html($arr, $depth = 0){

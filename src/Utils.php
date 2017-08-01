@@ -5,17 +5,13 @@ namespace Gunsobal\Xmlary;
 /**
  * Utilities class
  *
- * Various utilities used by this library
- *
  * @author Gunnar Baldursson
  */ 
 class Utils
 {
     /**
     * Utility function to check if an array is string keyed
-    *
     * @param array $arr Array to check for string keys
-    *
     * @return boolean
     */
     static public function isStringKeyed($arr){
@@ -29,9 +25,7 @@ class Utils
 
     /**
     * Utility function to get a class' basename
-    *
     * @param \stdClass $class Class object
-    *
     * @return string 
     */
     static public function class_basename($class){
