@@ -1,5 +1,5 @@
 # Xmlary
-A collection of helper classes I've made to simplify my workflow when using lots of XML with php. 
+A collection of helper classes I've made to simplify my workflow when using lots of XML with php. This is also my first test at creating a php package.
 
 Currently lacks some polish and some usability improvements before I'm comfortable releasing a v.1 but it is usable in its current state.
 
