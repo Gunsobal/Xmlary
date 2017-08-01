@@ -1,8 +1,0 @@
-<?php
-
-// Todo...
-
-class XmlParser
-{
-    
-}

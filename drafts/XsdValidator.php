@@ -1,8 +1,0 @@
-<?php
-
-// TODO..
-
-class XsdValidator
-{
-    
-}
