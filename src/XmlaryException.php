@@ -20,3 +20,8 @@ class XmlifyException extends XmlaryException { }
  * Exception specific to XmlMessage class
  */
 class XmlMessageException extends XmlaryException { }
+
+/**
+ * Exception specific to XmlParser class
+ */
+class XmlParserException extends XmlaryException { }

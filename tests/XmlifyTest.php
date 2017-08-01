@@ -6,6 +6,8 @@ use PHPUnit_Framework_TestCase;
 
 /**
  * Corresponding test class to Xmlify class
+ *
+ * Unit tests for Xmlify
  */
 class XmlifyTest extends PHPUnit_Framework_TestCase
 {

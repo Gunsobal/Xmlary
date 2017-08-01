@@ -9,7 +9,7 @@
             "email": "Gunso_Baldurs@hotmail.com"
         }
     ],
-    "type": "project",
+    "type": "library",
     "require": {
 		"php": ">=5.4"
     },

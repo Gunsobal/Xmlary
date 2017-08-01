@@ -1,8 +1,12 @@
 <?php
 
 include 'src/xmlify.php';
+include 'src/XmlParser.php';
+include 'src/XmlMessage.php';
 
-$xmlify = new Gunsobal\Xmlary\Xmlify();
+use Gunsobal\Xmlary\Xmlify;
+use Gunsobal\Xmlary\XmlParser;
+use Gunsobal\Xmlary\XmlMessage;
 
 $arr = [
     'order' => [
@@ -39,5 +43,19 @@ $arr = [
     ]
 ];
 
-$str = Gunsobal\Xmlary\Xmlify::stringify_html($arr);
-echo strlen($str);
+$msg = new XmlMessage([
+    'key' => 'value'
+]);
+$msg->toString();
+die();
+
+$str = Xmlify::xmlify_array($arr);
+$simple = XmlParser::toSimple($str);
+$dom = XmlParser::toDOM($simple);
+echo $dom->saveXML();
+die();
+var_dump($dom);
+die();
+echo $simple;
+die();
+$json = XmlParser::toJson($str->saveXML());

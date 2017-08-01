@@ -4,10 +4,15 @@ namespace Gunsobal\Xmlary;
 
 use PHPUnit_Framework_TestCase;
 
+/**
+ * Corresponding test class to XmlMessage class
+ *
+ * Unit tests for XmlMessage
+ */
 class XmlMessageTest extends PHPUnit_Framework_TestCase
 {
     /**
-     * Checking for syntax error in Xmlify
+     * Checking for syntax error in XmlMessage
      *
      * Simple check for typos and such
      */

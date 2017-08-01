@@ -4,8 +4,9 @@ namespace Gunsobal\Xmlary;
 
 include_once 'XmlaryException.php';
 include_once 'Utils.php';
+include_once 'Xmlify.php';
 
-use Xmlify;
+use Gunsobal\Xmlary\Xmlify;
 
 /**
  * XML Message base
