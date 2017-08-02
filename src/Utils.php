@@ -15,6 +15,7 @@ class Utils
     * @return boolean
     */
     static public function isStringKeyed($arr){
+        if (!is_array($arr)) return false;
         foreach ($arr as $key => $value){
             if (!is_string($key)){
                 return false;
@@ -28,8 +29,17 @@ class Utils
     * @param \stdClass $class Class object
     * @return string 
     */
-    static public function class_basename($class){
+    static public function getClassBasename($class){
         $names = explode('\\', get_class($class));
         return $names[count($names) - 1];
+    }
+
+    /**
+     * Utility function to check for empty string
+     * @param string $str
+     * @return boolean
+     */
+    static public function isEmptyString($str){
+        return ($str === null || $str === '');
     }
 }

@@ -28,7 +28,8 @@ $arr = [
                         ['@attributes' => [ 'color' => 'pink' ]], // Note: To add attributes to an element, the element value needs to be an array containing an array with attributes key
                         'pepsi'
                     ],
-                    'healthy' => 'juice'
+                    'healthy' => 'juice',
+                    'ingredients' => null
                 ]
             ]
         ]
@@ -51,4 +52,10 @@ $arr = [
 //   </drinks>
 // </order>
 
+$arr2 = json_decode(json_encode($arr), true);
+
 echo Xmlify::stringify($arr);
+echo Xmlify::stringify($arr2);
+
+
+die();
