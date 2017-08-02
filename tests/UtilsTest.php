@@ -22,8 +22,8 @@ class UtilsTest extends PHPUnit_Framework_TestCase
      * Testing class_basename
      */
     public function testClassBasename(){
-        $this->assertTrue(Utils::class_basename($this) == 'UtilsTest');
-        $this->assertFalse(Utils::class_basename(new Utils) == 'UtilsTest');
+        $this->assertTrue(Utils::getClassBasename($this) == 'UtilsTest');
+        $this->assertFalse(Utils::getClassBasename(new Utils) == 'UtilsTest');
     }
 
     /**
@@ -33,5 +33,15 @@ class UtilsTest extends PHPUnit_Framework_TestCase
         $this->assertTrue(Utils::isStringKeyed(['key' => 'value']));
         $this->assertFalse(Utils::isStringKeyed([0 => '1']));
         $this->assertFalse(Utils::isStringKeyed(['a', 'b']));
+    }
+
+    /**
+     * Testing isJson
+     */
+    public function testIsJson(){
+        $this->assertTrue(Utils::isJson('{"myjson":"string"}'));
+        $this->assertFalse(Utils::isJson('abc'));
+        $this->assertFalse(Utils::isJson(0));
+        $this->assertFalse(Utils::isJson('0'));
     }
 }

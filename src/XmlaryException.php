@@ -14,4 +14,4 @@ class XmlaryException extends Exception { }
 class XmlifyException extends XmlaryException { }
 class XmlMessageException extends XmlaryException { }
 class XmlParserException extends XmlaryException { }
- class XmlConverterException extends XmlaryException { }
+class XmlConverterException extends XmlaryException { }

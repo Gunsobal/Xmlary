@@ -1,7 +1,9 @@
 <?php
 
 include './src/Xmlify.php';
+include './src/XmlParser.php';
 
+use Gunsobal\Xmlary\XmlParser;
 use Gunsobal\Xmlary\Xmlify;
 
 $arr = [
@@ -36,23 +38,5 @@ $arr = [
     ]
 ];
 
-// <order class="order">
-//   <fruits class="fruit">orange</fruits>
-//   <fruits class="fruit">banana</fruits>
-//   <fruits class="fruit">apple</fruits>
-//   <drinks href="myUrl">
-//     <drink class="red">
-//       <soda>coke</soda>
-//       <healthy>water</healthy>
-//     </drink>
-//     <drink>
-//       <soda color="pink">pepsi</soda>
-//       <healthy>juice</healthy>
-//     </drink>
-//   </drinks>
-// </order>
-
-$arr2 = json_decode(json_encode($arr), true);
-echo Xmlify::xmlify($arr2)->saveXML();
-echo Xmlify::stringify($arr);
-// echo Xmlify::stringify($arr2);
+$xml = Xmlify::xmlify($arr)->saveXML();
+$xml2 = XmlParser::StringToJson("Abc");

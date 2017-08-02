@@ -49,7 +49,7 @@ class Utils
      * @return boolean
      */
     public static function isJson($str){
-        if (!is_string($str)) return false;
+        if (is_numeric($str)) return false;
         json_decode($str);
         return (json_last_error() == JSON_ERROR_NONE);
     }

@@ -94,7 +94,7 @@ class Xmlify
     }
 
     /**
-     * Recursively build DOMDocument from associative array
+     * Recursively build DOMDocument from associative array, same structure as stringify
      */
     protected static function recursiveXmlify($arr, $xml, $node = null){
         foreach ($arr as $key => $value){
