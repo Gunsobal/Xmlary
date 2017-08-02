@@ -45,4 +45,6 @@ $arr = [
 // print_r($arr);
 // print_r(json_decode(json_encode($arr), true));
 
-//  Xmlify::xmlify($arr)->saveXML();
+// Xmlify::xmlify($arr)->saveXML();
+
+$v = $arr;

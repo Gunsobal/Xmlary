@@ -32,7 +32,7 @@ class XmlConverter
             return XmlParser::SimpleToJson($xml);
         }
         if (Utils::isStringKeyed($xml)){
-            return XmlParser::DOMToJson(Xmlify::xmlify($xml));
+            return json_encode($xml);
         }
         throw new XmlConverterException("Unknown parameter in toJson function");
     }
