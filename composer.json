@@ -20,6 +20,5 @@
         "psr-4": {
             "Gunsobal\\Xmlary\\": "src/"
         }
-    },
-    "version": "1.0.0"
+    }
 }
