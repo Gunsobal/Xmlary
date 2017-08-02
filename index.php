@@ -28,6 +28,7 @@ $arr = [
                     'healthy' => 'water'
                 ],
                 [
+                    '@attributes' => ['class' => 'blue'],
                     'soda' => [
                         ['@attributes' => [ 'color' => 'pink' ]], // Note: To add attributes to an element, the element value needs to be an array containing an array with attributes key
                         'pepsi'
@@ -40,19 +41,8 @@ $arr = [
     ]
 ];
 
-$b = [
-    'Element' => [
-        'Sub' => [
-            'Val',
-            'V'
-        ]
-    ]
-];
+// echo '<pre>';
+// print_r($arr);
+// print_r(json_decode(json_encode($arr), true));
 
-$str = Xmlify::xmlify($b)->saveXML();
-$dom = XmlConverter::toDom($str);
-$js = XmlConverter::toJson($dom);
-var_dump($js);
-die();
-
-$xml = Xmlify::xmlify($arr)->saveXML();
+//  Xmlify::xmlify($arr)->saveXML();

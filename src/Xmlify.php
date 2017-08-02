@@ -63,24 +63,31 @@ class Xmlify
     protected static function recursiveStringify($arr, $depth){
         $str = '';
         $tabs = str_repeat("\t", $depth);
-        $attrs = '';
         foreach ($arr as $key => $value){
             if ($key === '@attributes') continue; // Ignore stringifying for attributes, it's handled differently
-            $attrArray = self::sieveOutAttributes($value);
-            self::validateElement($key, $attrArray);
-
+            self::validateElement($key);
+            $attrArray = self::getAttributes($value);
+            self::validateAttributes($attrArray);
             $attrs = self::stringifyAttributes($attrArray); // Get attributes for this node
             
             if (Utils::isStringKeyed($value)){ // If content of this node is string keyed, create node and go level deeper
-                $str .= "$tabs<$key$attrs>\n" . self::recursiveStringify($value, $depth  + 1) . "$tabs</$key>\n";
+                if (count($value) === 0 || (count($value) === 1 && array_key_exists('@attributes', $value))){
+                    $str .= "$tabs<$key$attrs/>\n";
+                } else {
+                    $str .= "$tabs<$key$attrs>\n" . self::recursiveStringify($value, $depth  + 1) . "$tabs</$key>\n";
+                }
             } else {
                 if (is_array($value)){ // If content is arrayed but not string keyed, multiple nodes with same name
                     foreach ($value as $v){
                         if (!is_array($v)){ // If content within multiple node is not complex
+                            $attrArray = self::getNestedAttributes($value);
+                            self::validateAttributes($attrArray);
+                            $attrs = self::stringifyAttributes($attrArray);
                             $str .= $tabs . self::stringifyXmlNode($key, $attrs, $v);
                         } else { // If content within mulitple node is complex
                             if (count($v) === 1 && array_key_exists('@attributes', $v)) continue;  //Don't print extra nodes for attribute value
-                            $attrArray = self::sieveOutAttributes($v);
+                            $attrArray = self::getAttributes($v);
+                            self::validateAttributes($attrArray);
                             $attrs = self::stringifyAttributes($attrArray); // Get attributes specific to this node
                             $str .= "$tabs<$key$attrs>\n" . self::recursiveStringify($v, $depth + 1) . "$tabs</$key>\n"; // Go 1 level deeper
                         }
@@ -99,20 +106,28 @@ class Xmlify
     protected static function recursiveXmlify($arr, $xml, $node = null){
         foreach ($arr as $key => $value){
             if ($key === '@attributes') continue;
-            $attrs = self::sieveOutAttributes($value);
-            self::validateElement($key, $attrs);
+            self::validateElement($key);
+            $attrs = self::getAttributes($value);
+            self::validateAttributes($attrs);
             
             if (Utils::isStringKeyed($value)){
-                $node = self::buildDOMNode($xml, $node, $key, $attrs);
-                self::recursiveXmlify($value, $xml, $node);
+                if (count($value) === 1 && array_key_exists('@attributes', $value)){
+                    self::buildDOMNode($xml, $node, $key, $attrs);
+                } else {
+                    $node = self::buildDOMNode($xml, $node, $key, $attrs);
+                    self::recursiveXmlify($value, $xml, $node);
+                }
             } else {
                 if (is_array($value)){
                     foreach ($value as $v){
                         if (!is_array($v)){
+                            $attrs = self::getNestedAttributes($value);
+                            self::validateAttributes($attrs);
                             self::buildDOMNode($xml, $node, $key, $attrs, $v);
                         } else {
                             if (count($v) === 1 && array_key_exists('@attributes', $v)) continue;
-                            $attrs = self::sieveOutAttributes($v);
+                            $attrs = self::getAttributes($v);
+                            self::validateAttributes($attrs);
                             $n = self::buildDOMnode($xml, $node, $key, $attrs);
                             self::recursiveXmlify($v, $xml, $n);
                         }
@@ -128,13 +143,19 @@ class Xmlify
     /**
      * Validates XML element according to standards on w3
      */
-    protected static function validateElement($key, $attrs){
+    protected static function validateElement($key){
         if (!self::validTag($key)){
             throw new XmlifyException("Invalid tag name: '$key'");
         }
-        foreach ($attrs as $attr => $val){
-            if (!self::validAttr($attr)){
-                throw new XmlifyException("Invalid attribute name: '$attr'");
+    }
+
+    /**
+     * Validate attributes array
+     */
+    protected static function validateAttributes($attr){
+        foreach ($attr as $a => $v){
+            if (!self::validAttr($a)){
+                throw new XmlifyException("Invalid attribute name: '$a'");
             }
         }
     }
@@ -142,15 +163,21 @@ class Xmlify
     /** 
      * Find attributes or none for a node
      */
-    protected static function sieveOutAttributes($arr){
+    protected static function getAttributes($arr){
         if (!is_array($arr)) return [];
         if (array_key_exists('@attributes', $arr)){ // Get this level attributes
             return $arr['@attributes'];
-        } else {
-            foreach ($arr as $v){
-                if (is_array($v) && array_key_exists('@attributes', $v)){ // Get 1 level deeper attributes
-                    return $v['@attributes'];
-                }
+        } 
+        return [];
+    }
+    
+    /**
+     * Find nested attributes or none
+     */
+    protected static function getNestedAttributes($arr){
+        foreach ($arr as $v){
+            if (is_array($v) && array_key_exists('@attributes', $v)){
+                return $v['@attributes'];
             }
         }
         return [];
