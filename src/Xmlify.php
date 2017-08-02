@@ -7,8 +7,22 @@ include_once 'XmlaryException.php';
 
 use \DOMDocument;
 
+/**
+ * This class converts string keyed associative arrays into XML. It's got support for generating a DOMDocument or 
+ * strings with the same markup as xml. It's got support for attributes as well as manually controlling tab
+ * indents when generating a markup string. It's defensive against invalid parameters and validates
+ * xml tags according to standards.
+ *
+ * @author Gunnar Baldursson
+ */
 class Xmlify
 {
+    /**
+     * Convert associative array to string
+     * @param array $arr An array to convert into XML string
+     * @param int $depth Tab indentation preceding first node, default 0
+     * @return string
+     */
     public static function stringify($arr, $depth = 0){
         if (is_array($arr) && Utils::isStringKeyed($arr)){
             return self::recursiveStringify($arr, $depth);
@@ -16,6 +30,13 @@ class Xmlify
         throw new XmlifyException("Invalid argument for stringify function");
     }
 
+    /**
+     * Convert associative array to DOMDocument
+     * @param array $arr An array to convert into XML
+     * @param string $version Version head on the XML document, default 1.0
+     * @param string $encoding Encoding head on the XML document, default UTF-8
+     * @return \DOMDocument
+     */
     public static function xmlify($arr, $version = "1.0", $encoding = "UTF-8"){
         if (is_array($arr) && Utils::isStringKeyed($arr)){
             $xml = new DOMDocument( $version, $encoding);
@@ -26,6 +47,19 @@ class Xmlify
         throw new XmlifyException("Invalid argument for xmlify function");
     }
 
+    /**
+     * Convert associative array to string with html special chars
+     * @param array $arr An array to convert into XML string
+     * @param int $depth Tab indentation preceding first node, default 0
+     * @return string
+     */
+    public static function htmlify($arr, $depth = 0){
+       return htmlspecialchars(self::stringify($arr, $depth));
+    }
+
+    /**
+     * Recursively build xml markup style string from associative array
+     */
     protected static function recursiveStringify($arr, $depth){
         $str = '';
         $tabs = str_repeat("\t", $depth);
@@ -59,6 +93,9 @@ class Xmlify
         return $str;
     }
 
+    /**
+     * Recursively build DOMDocument from associative array
+     */
     protected static function recursiveXmlify($arr, $xml, $node = null){
         foreach ($arr as $key => $value){
             if ($key === '@attributes') continue;
@@ -74,7 +111,7 @@ class Xmlify
                         if (!is_array($v)){
                             self::buildDOMNode($xml, $node, $key, $attrs, $v);
                         } else {
-                            if (count($v) === 1 && \array_key_exists('@attributes', $v)) continue;
+                            if (count($v) === 1 && array_key_exists('@attributes', $v)) continue;
                             $attrs = self::sieveOutAttributes($v);
                             $n = self::buildDOMnode($xml, $node, $key, $attrs);
                             self::recursiveXmlify($v, $xml, $n);
@@ -88,6 +125,9 @@ class Xmlify
         return $xml;
     }
 
+    /**
+     * Validates XML element according to standards on w3
+     */
     protected static function validateElement($key, $attrs){
         if (!self::validTag($key)){
             throw new XmlifyException("Invalid tag name: '$key'");
@@ -99,6 +139,9 @@ class Xmlify
         }
     }
 
+    /** 
+     * Find attributes or none for a node
+     */
     protected static function sieveOutAttributes($arr){
         if (!is_array($arr)) return [];
         if (array_key_exists('@attributes', $arr)){ // Get this level attributes
@@ -113,6 +156,9 @@ class Xmlify
         return [];
     }
 
+    /**
+     * Build a DOMNode attached to a parent
+     */
     protected static function buildDOMNode($document, $parent, $name, $attrs, $value = null){
         $node = ($value == null ? $document->createElement($name) : $document->createElement($name, $value));
         foreach ($attrs as $a => $v){
@@ -126,6 +172,9 @@ class Xmlify
         return $node;
     }
 
+    /**
+     * Build an xml node in string
+     */
     protected static function stringifyXmlNode($key, $attrs, $value){
         if (Utils::isEmptyString($value)){
             return "<$key$attrs/>\n";
@@ -134,6 +183,9 @@ class Xmlify
         }
     }
 
+    /**
+     * Build attributes string
+     */
     protected static function stringifyAttributes($arr){
         $attrs = '';
         if (!is_array($arr)) return $attrs;
@@ -143,10 +195,16 @@ class Xmlify
         return $attrs;
     }
 
+    /**
+     * Validate XML tag
+     */
     protected static function validTag($tag){
         return preg_match('/^(?!xml.*)[a-z\_][\w\-\:\.]*$/i', $tag);
     }
 
+    /**
+     * Validate attribute
+     */
     protected static function validAttr($attr){
         return preg_match('/^[a-z\_][\w\-\:\.]*$/i', $attr);
     }

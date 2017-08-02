@@ -42,4 +42,15 @@ class Utils
     static public function isEmptyString($str){
         return ($str === null || $str === '');
     }
+
+    /**
+     * Utility function to check for json string
+     * @param string $str
+     * @return boolean
+     */
+    public static function isJson($str){
+        if (!is_string($str)) return false;
+        json_decode($str);
+        return (json_last_error() == JSON_ERROR_NONE);
+    }
 }
