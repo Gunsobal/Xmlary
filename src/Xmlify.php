@@ -3,20 +3,27 @@
 namespace Gunsobal\Xmlary;
 
 include_once 'Utils.php';
+include_once 'XmlaryException.php';
 
 use \DOMDocument;
 
 class Xmlify
 {
     public static function stringify($arr, $depth = 0){
-        return self::recursiveStringify($arr, $depth);
+        if (is_array($arr) && Utils::isStringKeyed($arr)){
+            return self::recursiveStringify($arr, $depth);
+        }
+        throw new XmlifyException("Invalid argument for stringify function");
     }
 
     public static function xmlify($arr, $version = "1.0", $encoding = "UTF-8"){
-        $xml = new DOMDocument( $version, $encoding);
-        $xml->preserveWhiteSpace = false;
-        $xml->formatOutput = true;
-        return self::recursiveXmlify($arr, $xml);
+        if (is_array($arr) && Utils::isStringKeyed($arr)){
+            $xml = new DOMDocument( $version, $encoding);
+            $xml->preserveWhiteSpace = false;
+            $xml->formatOutput = true;
+            return self::recursiveXmlify($arr, $xml);
+        }
+        throw new XmlifyException("Invalid argument for xmlify function");
     }
 
     protected static function recursiveStringify($arr, $depth){
@@ -26,6 +33,8 @@ class Xmlify
         foreach ($arr as $key => $value){
             if ($key === '@attributes') continue; // Ignore stringifying for attributes, it's handled differently
             $attrArray = self::sieveOutAttributes($value);
+            self::validateElement($key, $attrArray);
+
             $attrs = self::stringifyAttributes($attrArray); // Get attributes for this node
             
             if (Utils::isStringKeyed($value)){ // If content of this node is string keyed, create node and go level deeper
@@ -54,6 +63,8 @@ class Xmlify
         foreach ($arr as $key => $value){
             if ($key === '@attributes') continue;
             $attrs = self::sieveOutAttributes($value);
+            self::validateElement($key, $attrs);
+            
             if (Utils::isStringKeyed($value)){
                 $node = self::buildDOMNode($xml, $node, $key, $attrs);
                 self::recursiveXmlify($value, $xml, $node);
@@ -75,6 +86,17 @@ class Xmlify
             }
         }
         return $xml;
+    }
+
+    protected static function validateElement($key, $attrs){
+        if (!self::validTag($key)){
+            throw new XmlifyException("Invalid tag name: '$key'");
+        }
+        foreach ($attrs as $attr => $val){
+            if (!self::validAttr($attr)){
+                throw new XmlifyException("Invalid attribute name: '$attr'");
+            }
+        }
     }
 
     protected static function sieveOutAttributes($arr){
@@ -106,7 +128,7 @@ class Xmlify
 
     protected static function stringifyXmlNode($key, $attrs, $value){
         if (Utils::isEmptyString($value)){
-            return "<$key$attrs />\n";
+            return "<$key$attrs/>\n";
         } else {
             return "<$key$attrs>$value</$key>\n";
         }
@@ -119,5 +141,13 @@ class Xmlify
             $attrs .= " $attr=\"$value\"";
         }
         return $attrs;
+    }
+
+    protected static function validTag($tag){
+        return preg_match('/^(?!xml.*)[a-z\_][\w\-\:\.]*$/i', $tag);
+    }
+
+    protected static function validAttr($attr){
+        return preg_match('/^[a-z\_][\w\-\:\.]*$/i', $attr);
     }
 }

@@ -54,4 +54,5 @@ $arr = [
 
 $arr2 = json_decode(json_encode($arr), true);
 echo Xmlify::xmlify($arr2)->saveXML();
+echo Xmlify::stringify($arr);
 // echo Xmlify::stringify($arr2);
