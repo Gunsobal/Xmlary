@@ -9,5 +9,54 @@ use PHPUnit_Framework_TestCase;
  */
 class XmlifyTest extends PHPUnit_Framework_TestCase
 {
+    /**
+     * Checking for syntax error in Xmlify
+     */
+    public function testIsThereAnySyntaxError(){
+        $x = new Xmlify;
+        $this->assertTrue(is_object($x));
+        unset($x);
+    }
 
+    /**
+     * Test stringify
+     * @dataProvider provider
+     */
+    public function testStringify($arr){
+        $this->assertTrue(is_string(Xmlify::stringify($arr)));
+    }
+
+    /**
+     * Test htmlify
+     * @dataProvider provider
+     */
+    public function testHtmlify($arr){
+        $this->assertTrue(is_string(Xmlify::htmlify($arr)));
+    }
+
+    /**
+     * Test xmlify
+     * @dataProvider provider
+     */
+    public function testXmlify($arr){
+        $this->assertTrue(is_a(Xmlify::xmlify($arr), 'DOMDocument'));
+    }
+
+    /**
+     * Test fail
+     * @expectedException Exception
+     */
+    public function testFail(){
+        Xmlify::xmlify(0);
+    }
+
+    public function provider(){
+        return [
+            [
+                [
+                    'El' => [ 'Sub' => ['Val', 'V']]
+                ]
+            ]
+        ];
+    }
 }

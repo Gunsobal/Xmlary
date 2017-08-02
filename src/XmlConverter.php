@@ -91,11 +91,11 @@ class XmlConverter
      * @return \SimpleXMLElement
      */
     public static function toSimple($xml){
-        if (is_a($xml, 'DOMDocument')){
-            return XmlParser::DOMToSimple($xml);
-        }
         if (is_a($xml, 'SimpleXMLElement')){
             return $xml;
+        }
+        if (is_a($xml, 'DOMDocument')){
+            return XmlParser::DOMToSimple($xml);
         }
         if (Utils::isStringKeyed($xml)){
             return XmlParser::DOMToSimple(Xmlify::xmlify($xml));

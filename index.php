@@ -2,9 +2,11 @@
 
 include './src/Xmlify.php';
 include './src/XmlParser.php';
+include './src/XmlConverter.php';
 
 use Gunsobal\Xmlary\XmlParser;
 use Gunsobal\Xmlary\Xmlify;
+use Gunsobal\Xmlary\XmlConverter;
 
 $arr = [
     'order' => [
@@ -38,5 +40,19 @@ $arr = [
     ]
 ];
 
+$b = [
+    'Element' => [
+        'Sub' => [
+            'Val',
+            'V'
+        ]
+    ]
+];
+
+$str = Xmlify::xmlify($b)->saveXML();
+$dom = XmlConverter::toDom($str);
+$js = XmlConverter::toJson($dom);
+var_dump($js);
+die();
+
 $xml = Xmlify::xmlify($arr)->saveXML();
-$xml2 = XmlParser::StringToJson("Abc");
