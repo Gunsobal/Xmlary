@@ -4,6 +4,8 @@ namespace Gunsobal\Xmlary;
 
 include_once 'Utils.php';
 
+use \DOMDocument;
+
 class Xmlify
 {
     public static function stringify($arr, $depth = 0){
@@ -23,7 +25,8 @@ class Xmlify
         $attrs = '';
         foreach ($arr as $key => $value){
             if ($key === '@attributes') continue; // Ignore stringifying for attributes, it's handled differently
-            $attrs = self::stringifyAttributes($value); // Get attributes for this node
+            $attrArray = self::sieveOutAttributes($value);
+            $attrs = self::stringifyAttributes($attrArray); // Get attributes for this node
             
             if (Utils::isStringKeyed($value)){ // If content of this node is string keyed, create node and go level deeper
                 $str .= "$tabs<$key$attrs>\n" . self::recursiveStringify($value, $depth  + 1) . "$tabs</$key>\n";
@@ -34,7 +37,8 @@ class Xmlify
                             $str .= $tabs . self::stringifyXmlNode($key, $attrs, $v);
                         } else { // If content within mulitple node is complex
                             if (count($v) === 1 && array_key_exists('@attributes', $v)) continue;  //Don't print extra nodes for attribute value
-                            $attrs = self::stringifyAttributes($v); // Get attributes specific to this node
+                            $attrArray = self::sieveOutAttributes($v);
+                            $attrs = self::stringifyAttributes($attrArray); // Get attributes specific to this node
                             $str .= "$tabs<$key$attrs>\n" . self::recursiveStringify($v, $depth + 1) . "$tabs</$key>\n"; // Go 1 level deeper
                         }
                     }
@@ -46,17 +50,58 @@ class Xmlify
         return $str;
     }
 
-    protected static function recursiveXmlify($arr, $xml){
+    protected static function recursiveXmlify($arr, $xml, $node = null){
         foreach ($arr as $key => $value){
-            $attrs = self::stringifyAttributes($value);
             if ($key === '@attributes') continue;
-
-            $node = $xml->createElement($key);
+            $attrs = self::sieveOutAttributes($value);
             if (Utils::isStringKeyed($value)){
-
+                $node = self::buildDOMNode($xml, $node, $key, $attrs);
+                self::recursiveXmlify($value, $xml, $node);
+            } else {
+                if (is_array($value)){
+                    foreach ($value as $v){
+                        if (!is_array($v)){
+                            self::buildDOMNode($xml, $node, $key, $attrs, $v);
+                        } else {
+                            if (count($v) === 1 && \array_key_exists('@attributes', $v)) continue;
+                            $attrs = self::sieveOutAttributes($v);
+                            $n = self::buildDOMnode($xml, $node, $key, $attrs);
+                            self::recursiveXmlify($v, $xml, $n);
+                        }
+                    }
+                } else {
+                    self::buildDOMNode($xml, $node, $key, $attrs, $value);
+                }
             }
         }
         return $xml;
+    }
+
+    protected static function sieveOutAttributes($arr){
+        if (!is_array($arr)) return [];
+        if (array_key_exists('@attributes', $arr)){ // Get this level attributes
+            return $arr['@attributes'];
+        } else {
+            foreach ($arr as $v){
+                if (is_array($v) && array_key_exists('@attributes', $v)){ // Get 1 level deeper attributes
+                    return $v['@attributes'];
+                }
+            }
+        }
+        return [];
+    }
+
+    protected static function buildDOMNode($document, $parent, $name, $attrs, $value = null){
+        $node = ($value == null ? $document->createElement($name) : $document->createElement($name, $value));
+        foreach ($attrs as $a => $v){
+            $node->setAttribute($a, $v);
+        }
+        if ($parent === null) {
+            $document->appendChild($node);
+        } else {
+            $parent->appendChild($node);
+        }
+        return $node;
     }
 
     protected static function stringifyXmlNode($key, $attrs, $value){
@@ -70,18 +115,8 @@ class Xmlify
     protected static function stringifyAttributes($arr){
         $attrs = '';
         if (!is_array($arr)) return $attrs;
-        if (array_key_exists('@attributes', $arr)){ // Get attributes when it's keyed in with other keys
-            foreach ($arr['@attributes'] as $attr => $value){
-                $attrs .= " $attr=\"$value\"";
-            }
-        } else {
-            foreach ($arr as $v){ // Extract attributes from array
-                if (is_array($v) && array_key_exists('@attributes', $v)){
-                    foreach ($v['@attributes'] as $attr => $value){
-                        $attrs .= " $attr=\"$value\"";
-                    }
-                }
-            }
+        foreach ($arr as $attr => $value){
+            $attrs .= " $attr=\"$value\"";
         }
         return $attrs;
     }

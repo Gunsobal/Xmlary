@@ -37,7 +37,7 @@ class XmlMessage
 
     public function __construct($arr){
         $this->_data = $arr;
-        $this->_name = Utils::class_basename($this); // Set this class' name
+        $this->_name = Utils::getClassBasename($this); // Set this class' name
         $this->_build = 'build'; // Set this class' build function. default build
         $this->_version = '1.0'; // Defaults for version and encoding
         $this->_encoding = 'UTF-8';
