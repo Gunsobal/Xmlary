@@ -3,8 +3,6 @@
 namespace Gunsobal\Xmlary;
 
 /**
- * Class converts between XML, associative arrays and json
- *
  * This class' role is to provide an easy interface to convert between arrays, xml and json
  *
  * @author Gunso Baldursson

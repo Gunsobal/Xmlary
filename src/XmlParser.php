@@ -7,8 +7,6 @@ include_once 'XmlaryException.php';
 use DOMDocument;
 
 /**
- * Class parses XML into other formats
- *
  * Parse XML into JSON, Associative array, DOMDocument or SimpleXMLElement from xml string, SimpleXMLElement or DOMDocument
  *
  * @author Gunnar Baldursson

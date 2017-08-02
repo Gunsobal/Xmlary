@@ -7,8 +7,6 @@ include_once 'XmlParser.php';
 use Gunsobal\Xmlary\XmlParser;
 
 /**
- * XSD Validator
- *
  * Validates XML against an XSD schema
  *
  * @author Gunnar Baldursson

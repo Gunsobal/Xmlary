@@ -9,8 +9,6 @@ include_once 'Xmlify.php';
 use Gunsobal\Xmlary\Xmlify;
 
 /**
- * XML Message base
- *
  * This class provides a base upon which to build new outgoing XML messages. It is built following
  * Factory pattern conventions and uses underscores for its protected properties. In derivative 
  * classes, simply provide a build method returning an array suitable for Xmlify.
