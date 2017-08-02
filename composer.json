@@ -1,7 +1,7 @@
 {
     "name": "gunsobal/xmlary",
     "description": "Collection of helper class for working with xml",
-    "keywords": ["xmlary", "xmlify", "xml", "xmlmessage", "xsdvalidator", "xmlparser"],
+    "keywords": ["xmlary", "xmlify", "xml", "xmlmessage", "xsdvalidator", "xmlparser", "xmlconverter"],
     "license": "MIT",
     "authors": [
         {
@@ -21,5 +21,5 @@
             "Gunsobal\\Xmlary\\": "src/"
         }
     },
-    "minimum-stability": "dev"
+    "version": "1.0.0"
 }

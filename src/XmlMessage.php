@@ -65,7 +65,7 @@ class XmlMessage
      * @return string Valid XML
      */ 
     public function toXml(){
-        return Xmlify::xmlify_array([$this->_name => $this->{$this->_build}()], $this->_version, $this->_encoding)->saveXml();
+        return Xmlify::xmlify([$this->_name => $this->{$this->_build}()], $this->_version, $this->_encoding)->saveXml();
     }
 
     /**
@@ -73,7 +73,7 @@ class XmlMessage
      * @return \DOMDocument
      */
      public function toDOM(){
-         return Xmlify::xmlify_array([$this->_name => $this->{$this->_build}()], $this->_version, $this->_encoding);
+         return Xmlify::xmlify([$this->_name => $this->{$this->_build}()], $this->_version, $this->_encoding);
      }
 
     /**
