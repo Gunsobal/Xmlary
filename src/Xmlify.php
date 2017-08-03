@@ -187,9 +187,7 @@ class Xmlify
     protected static function buildDOMNode($document, $parent, $name, $attrs, $value = null){
         $node = ($value == null ? $document->createElement($name) : $document->createElement($name, $value));
         foreach ($attrs as $a => $v){
-            if (!self::isControlAttribute($a)){
-                $node->setAttribute($a, $v);
-            }
+            $node->setAttribute($a, $v);
         }
         if ($parent === null) {
             $document->appendChild($node);
@@ -217,19 +215,13 @@ class Xmlify
         $attrs = '';
         if (!is_array($arr)) return $attrs;
         foreach ($arr as $attr => $value){
-            if (! self::isControlAttribute($attr)){
-                $attrs .= " $attr=\"$value\"";
-            }
+            $attrs .= " $attr=\"$value\"";
         }
         return $attrs;
     }
 
     protected static function isAttributes($arr){
         return is_array($arr) && array_key_exists('@attributes', $arr) && count($arr) === 1;
-    }
-
-    protected static function isControlAttribute($attr){
-        return preg_match('/^@@.*$/', $attr);
     }
 
     /**
@@ -243,6 +235,6 @@ class Xmlify
      * Validate attribute
      */
     protected static function validAttr($attr){
-        return self::isControlAttribute($attr) || preg_match('/^[a-z\_][\w\-\:\.]*$/i', $attr);
+        return preg_match('/^[a-z\_][\w\-\:\.]*$/i', $attr);
     }
 }

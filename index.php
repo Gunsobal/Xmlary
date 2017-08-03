@@ -1,8 +1,6 @@
 <?php
 
-include './src/Xmlify.php';
-include './src/XmlParser.php';
-include './src/XmlConverter.php';
+require 'vendor/autoload.php';
 
 use Gunsobal\Xmlary\XmlParser;
 use Gunsobal\Xmlary\Xmlify;
@@ -56,31 +54,6 @@ $arr2 = [
     ]
 ];
 
-echo Xmlify::xmlify($arr)->saveXML();
-echo Xmlify::stringify($arr);
-
-echo Xmlify::xmlify($arr2)->saveXML();
-echo Xmlify::stringify($arr2);
-
-// XmlConverter tests
-// $simple = XmlConverter::toSimple($arr); // Correct
-// $simple2 = XmlConverter::toSimple($arr2); // Correct
-
-// $dom = XmlConverter::toDOM($arr); // Correct
-// $dom2 = XmlConverter::toDOM($arr2); // Correct
-
-// $json = XmlConverter::toJson($arr); // Looks correct
-// $json2 = XmlConverter::toJson($arr2); // Looks correct
-
-// $assoc = XmlConverter::toAssoc($simple);
-// $assoc_1 = XmlConverter::toAssoc($dom);
-// $assoc_2 = XmlConverter::toAssoc($json);
-
-// echo $simple->asXML();
-// echo $simple2->asXML();
-// echo $dom->saveXML();
-// echo $dom2->saveXML();
-// echo $json;
-// echo $json2;
-// echo '<pre>';
-// print_r($assoc);
+$s = XmlConverter::toDOM($arr);
+$json = XmlConverter::toJson($s);
+echo $json;

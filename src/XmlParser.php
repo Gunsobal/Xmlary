@@ -99,7 +99,7 @@ class XmlParser
      * @return string
      */
     public static function SimpleToJson($simple){
-        return json_encode($simple);
+        return '{"' .$simple->getName() . '":' . json_encode($simple) . '}';
     }
 
     /**
@@ -108,6 +108,6 @@ class XmlParser
      * @return array
      */
     public static function SimpleToAssoc($simple){
-        return json_decode( json_encode($simple), true );
+        return [$simple->getName() => json_decode( json_encode($simple), true )];
     }
 }
