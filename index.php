@@ -13,18 +13,24 @@ $arr = [
         '@attributes' => ['class' => 'order', 'abc' => 'cde'], // Note: @attributes doesn't have to be contained in its own array because 'order' is not an array of arrays
         'fruits' => [
             [
-                '@attributes' => ['class' => 'fruit', 'href' => 'ef', '@@empty' => true] // Note: class="fruit" gets applied to all elements in the fruits array unless overwritten
+                '@attributes' => ['class' => 'fruit', 'href' => 'ef'] // Note: class="fruit" gets applied to all elements in the fruits array unless overwritten
             ],
             [
-                '@attributes' => ['class' => 'banana', '@@empty' => true]
+                '@attributes' => ['class' => 'banana']
             ],
-            'banana'
+            [
+                '@attributes' => ['class' => 'banana']
+            ],
+            'banana',
+            [
+                '@attributes' => ['class' => 'apple']
+            ]
         ],
         'drinks' => [
             '@attributes' => ['href' => 'myUrl'], // Note: @attributes doesn't have to be contained in its own array because 'order' is not an array of arrays
             'drink' => [
                 [
-                    '@attributes' => ['class' => 'red'], // Note: Attributes get applied to every subsequent drink node unless overwritten
+                    '@attributes' => ['class' => 'red'], 
                     'soda' => 'coke',
                     'healthy' => 'water'
                 ],
@@ -50,12 +56,31 @@ $arr2 = [
     ]
 ];
 
-// echo '<pre>';
-// print_r($arr);
-// print_r(json_decode(json_encode($arr), true));
-
 echo Xmlify::xmlify($arr)->saveXML();
 echo Xmlify::stringify($arr);
 
 echo Xmlify::xmlify($arr2)->saveXML();
 echo Xmlify::stringify($arr2);
+
+// XmlConverter tests
+// $simple = XmlConverter::toSimple($arr); // Correct
+// $simple2 = XmlConverter::toSimple($arr2); // Correct
+
+// $dom = XmlConverter::toDOM($arr); // Correct
+// $dom2 = XmlConverter::toDOM($arr2); // Correct
+
+// $json = XmlConverter::toJson($arr); // Looks correct
+// $json2 = XmlConverter::toJson($arr2); // Looks correct
+
+// $assoc = XmlConverter::toAssoc($simple);
+// $assoc_1 = XmlConverter::toAssoc($dom);
+// $assoc_2 = XmlConverter::toAssoc($json);
+
+// echo $simple->asXML();
+// echo $simple2->asXML();
+// echo $dom->saveXML();
+// echo $dom2->saveXML();
+// echo $json;
+// echo $json2;
+// echo '<pre>';
+// print_r($assoc);

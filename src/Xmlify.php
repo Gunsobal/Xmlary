@@ -72,29 +72,29 @@ class Xmlify
             
             if (Utils::isStringKeyed($value)){ // If content of this node is string keyed, create node and go level deeper
                 if (count($value) === 0 || self::isAttributes($value)){ // Enable empty tag with attributes
-                    $str .= "$tabs<$key$attrs/>\n";
+                    $str .= $tabs . self::stringifyXmlNode($key, $attrs, '');
                 } else {
                     $str .= "$tabs<$key$attrs>\n" . self::recursiveStringify($value, $depth  + 1) . "$tabs</$key>\n";
                 }
             } else {
                 if (is_array($value)){ // If content is arrayed but not string keyed, multiple nodes with same name
-                    foreach ($value as $v){
-                        if (!is_array($v)){ // If content within multiple node is not complex
+                    for ($i = 0; $i < count($value); ++$i){
+                        if (!is_array($value[$i])){ // If content within multiple node is not complex
                             $attrs = self::stringifyAttributes($attrArray);
-                            $str .= $tabs . self::stringifyXmlNode($key, $attrs, $v);
+                            $str .= $tabs . self::stringifyXmlNode($key, $attrs, $value[$i]);
                         } else { // If content within mulitple node is complex
-                            if (self::isAttributes($v)) {
-                                $attrArray = self::getAttributes($v); // Overwrite attributes if a later attribute array is found
+                            if (self::isAttributes($value[$i])) {
+                                $attrArray = self::getAttributes($value[$i]); // Overwrite attributes if a later attribute array is found
                                 self::validateAttributes($attrArray);
-                                if (array_key_exists('@@empty', $attrArray)){
+                                if ($i == count($value) - 1 || ($i < count($value) - 1 && self::isAttributes($value[$i + 1]))){ //If next is attributes or this is last item in array
                                     $str .= $tabs . self::stringifyXmlNode($key, self::stringifyAttributes($attrArray), '');
                                 }
                                 continue;  //Don't print extra nodes for attribute value unless next value is attributes
                             }
-                            $attrArray = self::getAttributes($v);
+                            $attrArray = self::getAttributes($value[$i]);
                             self::validateAttributes($attrArray);
                             $attrs = self::stringifyAttributes($attrArray); // Get attributes specific to this node
-                            $str .= "$tabs<$key$attrs>\n" . self::recursiveStringify($v, $depth + 1) . "$tabs</$key>\n"; // Go 1 level deeper
+                            $str .= "$tabs<$key$attrs>\n" . self::recursiveStringify($value[$i], $depth + 1) . "$tabs</$key>\n"; // Go 1 level deeper
                         }
                     }
                 } else {
@@ -124,22 +124,22 @@ class Xmlify
                 }
             } else {
                 if (is_array($value)){
-                    foreach ($value as $v){
-                        if (!is_array($v)){
-                            self::buildDOMNode($xml, $node, $key, $attrs, $v);
+                    for ($i = 0; $i < count($value); ++$i){
+                        if (!is_array($value[$i])){
+                            self::buildDOMNode($xml, $node, $key, $attrs, $value[$i]);
                         } else {
-                            if (self::isAttributes($v)){
-                                $attrs = self::getAttributes($v);
+                            if (self::isAttributes($value[$i])){
+                                $attrs = self::getAttributes($value[$i]);
                                 self::validateAttributes($attrs);
-                                if (array_key_exists('@@empty', $attrs)){
+                                if ($i == count($value) - 1 || ($i < count($value) - 1 && self::isAttributes($value[$i + 1]))){
                                     self::buildDOMNode($xml, $node, $key, $attrs);
                                 }
                                 continue;
                             } 
-                            $attrs = self::getAttributes($v);
+                            $attrs = self::getAttributes($value[$i]);
                             self::validateAttributes($attrs);
                             $n = self::buildDOMnode($xml, $node, $key, $attrs);
-                            self::recursiveXmlify($v, $xml, $n);
+                            self::recursiveXmlify($value[$i], $xml, $n);
                         }
                     }
                 } else {
@@ -204,7 +204,7 @@ class Xmlify
      */
     protected static function stringifyXmlNode($key, $attrs, $value){
         if (Utils::isEmptyString($value)){
-            return "<$key$attrs/>\n";
+            return "<$key$attrs />\n";
         } else {
             return "<$key$attrs>$value</$key>\n";
         }
@@ -225,7 +225,7 @@ class Xmlify
     }
 
     protected static function isAttributes($arr){
-        return array_key_exists('@attributes', $arr) && count($arr) === 1;
+        return is_array($arr) && array_key_exists('@attributes', $arr) && count($arr) === 1;
     }
 
     protected static function isControlAttribute($attr){
