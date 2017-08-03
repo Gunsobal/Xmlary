@@ -16,6 +16,9 @@ $arr = [
                 '@attributes' => ['class' => 'fruit'] // Note: class="fruit" gets applied to all elements in the fruits array unless overwritten
             ],
             'orange',
+            [
+                '@attributes' => ['class' => 'banana']
+            ],
             'banana',
             'apple'
         ],
@@ -41,10 +44,20 @@ $arr = [
     ]
 ];
 
+$arr2 = [
+    'Elem' => [
+        'Sub' => [
+            '@attributes' => ['class' => 'red']
+        ]
+    ]
+];
+
 // echo '<pre>';
 // print_r($arr);
 // print_r(json_decode(json_encode($arr), true));
 
-// Xmlify::xmlify($arr)->saveXML();
+echo Xmlify::xmlify($arr)->saveXML();
+echo Xmlify::stringify($arr);
 
-$v = $arr;
+echo Xmlify::xmlify($arr2)->saveXML();
+echo Xmlify::stringify($arr2);

@@ -80,12 +80,14 @@ class Xmlify
                 if (is_array($value)){ // If content is arrayed but not string keyed, multiple nodes with same name
                     foreach ($value as $v){
                         if (!is_array($v)){ // If content within multiple node is not complex
-                            $attrArray = self::getNestedAttributes($value);
                             self::validateAttributes($attrArray);
                             $attrs = self::stringifyAttributes($attrArray);
                             $str .= $tabs . self::stringifyXmlNode($key, $attrs, $v);
                         } else { // If content within mulitple node is complex
-                            if (count($v) === 1 && array_key_exists('@attributes', $v)) continue;  //Don't print extra nodes for attribute value
+                            if (count($v) === 1 && array_key_exists('@attributes', $v)) {
+                                $attrArray = self::getAttributes($v); // Overwrite attributes if a later attribute array is found
+                                continue;  //Don't print extra nodes for attribute value
+                            }
                             $attrArray = self::getAttributes($v);
                             self::validateAttributes($attrArray);
                             $attrs = self::stringifyAttributes($attrArray); // Get attributes specific to this node
@@ -121,11 +123,13 @@ class Xmlify
                 if (is_array($value)){
                     foreach ($value as $v){
                         if (!is_array($v)){
-                            $attrs = self::getNestedAttributes($value);
                             self::validateAttributes($attrs);
                             self::buildDOMNode($xml, $node, $key, $attrs, $v);
                         } else {
-                            if (count($v) === 1 && array_key_exists('@attributes', $v)) continue;
+                            if (count($v) === 1 && array_key_exists('@attributes', $v)){
+                                $attrs = self::getAttributes($v);
+                                continue;
+                            } 
                             $attrs = self::getAttributes($v);
                             self::validateAttributes($attrs);
                             $n = self::buildDOMnode($xml, $node, $key, $attrs);
@@ -168,18 +172,6 @@ class Xmlify
         if (array_key_exists('@attributes', $arr)){ // Get this level attributes
             return $arr['@attributes'];
         } 
-        return [];
-    }
-    
-    /**
-     * Find nested attributes or none
-     */
-    protected static function getNestedAttributes($arr){
-        foreach ($arr as $v){
-            if (is_array($v) && array_key_exists('@attributes', $v)){
-                return $v['@attributes'];
-            }
-        }
         return [];
     }
 
