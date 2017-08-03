@@ -64,14 +64,14 @@ class Xmlify
         $str = '';
         $tabs = str_repeat("\t", $depth);
         foreach ($arr as $key => $value){
-            if ($key === '@attributes') continue; // Ignore stringifying for attributes, it's handled differently
+            if ($key === '@attributes') continue; // Ignore stringifying for control keys
             self::validateElement($key);
             $attrArray = self::getAttributes($value);
             self::validateAttributes($attrArray);
             $attrs = self::stringifyAttributes($attrArray); // Get attributes for this node
             
             if (Utils::isStringKeyed($value)){ // If content of this node is string keyed, create node and go level deeper
-                if (count($value) === 0 || (count($value) === 1 && array_key_exists('@attributes', $value))){
+                if (count($value) === 0 || self::isAttributes($value)){ // Enable empty tag with attributes
                     $str .= "$tabs<$key$attrs/>\n";
                 } else {
                     $str .= "$tabs<$key$attrs>\n" . self::recursiveStringify($value, $depth  + 1) . "$tabs</$key>\n";
@@ -83,10 +83,13 @@ class Xmlify
                             $attrs = self::stringifyAttributes($attrArray);
                             $str .= $tabs . self::stringifyXmlNode($key, $attrs, $v);
                         } else { // If content within mulitple node is complex
-                            if (count($v) === 1 && array_key_exists('@attributes', $v)) {
+                            if (self::isAttributes($v)) {
                                 $attrArray = self::getAttributes($v); // Overwrite attributes if a later attribute array is found
                                 self::validateAttributes($attrArray);
-                                continue;  //Don't print extra nodes for attribute value
+                                if (array_key_exists('@@empty', $attrArray)){
+                                    $str .= $tabs . self::stringifyXmlNode($key, self::stringifyAttributes($attrArray), '');
+                                }
+                                continue;  //Don't print extra nodes for attribute value unless next value is attributes
                             }
                             $attrArray = self::getAttributes($v);
                             self::validateAttributes($attrArray);
@@ -113,7 +116,7 @@ class Xmlify
             self::validateAttributes($attrs);
             
             if (Utils::isStringKeyed($value)){
-                if (count($value) === 1 && array_key_exists('@attributes', $value)){
+                if (self::isAttributes($value)){
                     self::buildDOMNode($xml, $node, $key, $attrs);
                 } else {
                     $node = self::buildDOMNode($xml, $node, $key, $attrs);
@@ -125,9 +128,12 @@ class Xmlify
                         if (!is_array($v)){
                             self::buildDOMNode($xml, $node, $key, $attrs, $v);
                         } else {
-                            if (count($v) === 1 && array_key_exists('@attributes', $v)){
+                            if (self::isAttributes($v)){
                                 $attrs = self::getAttributes($v);
                                 self::validateAttributes($attrs);
+                                if (array_key_exists('@@empty', $attrs)){
+                                    self::buildDOMNode($xml, $node, $key, $attrs);
+                                }
                                 continue;
                             } 
                             $attrs = self::getAttributes($v);
@@ -181,7 +187,9 @@ class Xmlify
     protected static function buildDOMNode($document, $parent, $name, $attrs, $value = null){
         $node = ($value == null ? $document->createElement($name) : $document->createElement($name, $value));
         foreach ($attrs as $a => $v){
-            $node->setAttribute($a, $v);
+            if (!self::isControlAttribute($a)){
+                $node->setAttribute($a, $v);
+            }
         }
         if ($parent === null) {
             $document->appendChild($node);
@@ -209,9 +217,19 @@ class Xmlify
         $attrs = '';
         if (!is_array($arr)) return $attrs;
         foreach ($arr as $attr => $value){
-            $attrs .= " $attr=\"$value\"";
+            if (! self::isControlAttribute($attr)){
+                $attrs .= " $attr=\"$value\"";
+            }
         }
         return $attrs;
+    }
+
+    protected static function isAttributes($arr){
+        return array_key_exists('@attributes', $arr) && count($arr) === 1;
+    }
+
+    protected static function isControlAttribute($attr){
+        return preg_match('/^@@.*$/', $attr);
     }
 
     /**
@@ -225,6 +243,6 @@ class Xmlify
      * Validate attribute
      */
     protected static function validAttr($attr){
-        return preg_match('/^[a-z\_][\w\-\:\.]*$/i', $attr);
+        return self::isControlAttribute($attr) || preg_match('/^[a-z\_][\w\-\:\.]*$/i', $attr);
     }
 }

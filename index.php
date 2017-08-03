@@ -13,14 +13,12 @@ $arr = [
         '@attributes' => ['class' => 'order', 'abc' => 'cde'], // Note: @attributes doesn't have to be contained in its own array because 'order' is not an array of arrays
         'fruits' => [
             [
-                '@attributes' => ['class' => 'fruit', 'href' => 'ef'] // Note: class="fruit" gets applied to all elements in the fruits array unless overwritten
+                '@attributes' => ['class' => 'fruit', 'href' => 'ef', '@@empty' => true] // Note: class="fruit" gets applied to all elements in the fruits array unless overwritten
             ],
-            'orange',
             [
-                '@attributes' => ['class' => 'banana']
+                '@attributes' => ['class' => 'banana', '@@empty' => true]
             ],
-            'banana',
-            'apple'
+            'banana'
         ],
         'drinks' => [
             '@attributes' => ['href' => 'myUrl'], // Note: @attributes doesn't have to be contained in its own array because 'order' is not an array of arrays
