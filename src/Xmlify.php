@@ -80,12 +80,12 @@ class Xmlify
                 if (is_array($value)){ // If content is arrayed but not string keyed, multiple nodes with same name
                     foreach ($value as $v){
                         if (!is_array($v)){ // If content within multiple node is not complex
-                            self::validateAttributes($attrArray);
                             $attrs = self::stringifyAttributes($attrArray);
                             $str .= $tabs . self::stringifyXmlNode($key, $attrs, $v);
                         } else { // If content within mulitple node is complex
                             if (count($v) === 1 && array_key_exists('@attributes', $v)) {
                                 $attrArray = self::getAttributes($v); // Overwrite attributes if a later attribute array is found
+                                self::validateAttributes($attrArray);
                                 continue;  //Don't print extra nodes for attribute value
                             }
                             $attrArray = self::getAttributes($v);
@@ -123,11 +123,11 @@ class Xmlify
                 if (is_array($value)){
                     foreach ($value as $v){
                         if (!is_array($v)){
-                            self::validateAttributes($attrs);
                             self::buildDOMNode($xml, $node, $key, $attrs, $v);
                         } else {
                             if (count($v) === 1 && array_key_exists('@attributes', $v)){
                                 $attrs = self::getAttributes($v);
+                                self::validateAttributes($attrs);
                                 continue;
                             } 
                             $attrs = self::getAttributes($v);
