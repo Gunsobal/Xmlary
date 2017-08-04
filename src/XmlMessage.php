@@ -3,10 +3,9 @@
 namespace Gunsobal\Xmlary;
 
 include_once 'XmlaryException.php';
-include_once 'Utils.php';
-include_once 'Xmlify.php';
 
 use Gunsobal\Xmlary\Xmlify;
+use Gunsobal\Utils\Objects;
 
 /**
  * This class provides a base upon which to build new outgoing XML messages. It is built following
@@ -37,7 +36,7 @@ class XmlMessage
 
     public function __construct($arr){
         $this->_data = $arr;
-        if (!$this->_name) $this->_name = Utils::getClassBasename($this); // Set this class' name
+        if (!$this->_name) $this->_name = Objects::getClassBasename($this); // Set this class' name
         if (!$this->_build) $this->_build = 'build'; // Set this class' build function. default build
         if (!$this->_version) $this->_version = '1.0'; // Defaults for version and encoding
         if (!$this->_encoding) $this->_encoding = 'UTF-8';

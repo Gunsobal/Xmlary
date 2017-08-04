@@ -2,8 +2,10 @@
 
 namespace Gunsobal\Xmlary;
 
-include_once 'Utils.php';
 include_once 'XmlaryException.php';
+
+use Gunsobal\Utils\Arrays;
+use Gunsobal\Utils\Strings;
 
 use \DOMDocument;
 
@@ -24,7 +26,7 @@ class Xmlify
      * @return string
      */
     public static function stringify($arr, $depth = 0){
-        if (is_array($arr) && Utils::isStringKeyed($arr)){
+        if (is_array($arr) && Arrays::isStringKeyed($arr)){
             return self::recursiveStringify($arr, $depth);
         }
         throw new XmlifyException("Invalid argument for stringify function");
@@ -38,7 +40,7 @@ class Xmlify
      * @return \DOMDocument
      */
     public static function xmlify($arr, $version = "1.0", $encoding = "UTF-8"){
-        if (is_array($arr) && Utils::isStringKeyed($arr)){
+        if (is_array($arr) && Arrays::isStringKeyed($arr)){
             $xml = new DOMDocument( $version, $encoding);
             $xml->preserveWhiteSpace = false;
             $xml->formatOutput = true;
@@ -70,7 +72,7 @@ class Xmlify
             self::validateAttributes($attrArray);
             $attrs = self::stringifyAttributes($attrArray); // Get attributes for this node
             
-            if (Utils::isStringKeyed($value)){ // If content of this node is string keyed, create node and go level deeper
+            if (Arrays::isStringKeyed($value)){ // If content of this node is string keyed, create node and go level deeper
                 if (count($value) === 0 || self::isAttributes($value)){ // Enable empty tag with attributes
                     $str .= $tabs . self::stringifyXmlNode($key, $attrs, '');
                 } else {
@@ -115,7 +117,7 @@ class Xmlify
             $attrs = self::getAttributes($value);
             self::validateAttributes($attrs);
             
-            if (Utils::isStringKeyed($value)){
+            if (Arrays::isStringKeyed($value)){
                 if (self::isAttributes($value)){
                     self::buildDOMNode($xml, $node, $key, $attrs);
                 } else {
@@ -201,7 +203,7 @@ class Xmlify
      * Build an xml node in string
      */
     protected static function stringifyXmlNode($key, $attrs, $value){
-        if (Utils::isEmptyString($value)){
+        if (Strings::isEmptyString($value)){
             return "<$key$attrs />\n";
         } else {
             return "<$key$attrs>$value</$key>\n";

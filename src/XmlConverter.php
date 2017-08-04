@@ -2,9 +2,10 @@
 
 namespace Gunsobal\Xmlary;
 
-include_once 'Utils.php';
-include_once 'Xmlify.php';
-include_once 'XmlParser.php';
+use Gunsobal\Xmlary\XmlParser;
+use Gunsobal\Xmlary\Xmlify;
+use Gunsobal\Utils\Strings;
+use Gunsobal\Utils\Arrays;
 
 /**
  * This class' role is to provide an easy interface to convert between arrays, xml and json
@@ -19,7 +20,7 @@ class XmlConverter
      * @return string
      */
     public static function toJson($xml){
-        if (Utils::isJson($xml)){
+        if (Strings::isJson($xml)){
             return $xml;
         }
         if (is_string($xml)){
@@ -31,7 +32,7 @@ class XmlConverter
         if (is_a($xml, 'SimpleXMLElement')){
             return XmlParser::SimpleToJson($xml);
         }
-        if (Utils::isStringKeyed($xml)){
+        if (Arrays::isStringKeyed($xml)){
             return json_encode($xml);
         }
         throw new XmlConverterException("Unknown parameter in toJson function");
@@ -43,7 +44,7 @@ class XmlConverter
      * @return array
      */
     public static function toAssoc($xml){
-        if (Utils::isStringKeyed($xml)){
+        if (Arrays::isStringKeyed($xml)){
             return $xml;
         }
         if (is_a($xml, 'DOMDocument')){
@@ -52,7 +53,7 @@ class XmlConverter
         if (is_a($xml, 'SimpleXMLElement')){
             return XmlParser::SimpleToAssoc($xml);
         }
-        if (Utils::isJson($xml)){
+        if (Strings::isJson($xml)){
             return json_decode($xml, true);
         }
         if (is_string($xml)){
@@ -73,10 +74,10 @@ class XmlConverter
         if (is_a($xml, 'SimpleXMLElement')){
             return XmlParser::SimpleToDOM($xml);
         }
-        if (Utils::isStringKeyed($xml)){
+        if (Arrays::isStringKeyed($xml)){
             return Xmlify::xmlify($xml);
         }
-        if (Utils::isJson($xml)){
+        if (Strings::isJson($xml)){
             return Xmlify::xmlify(json_decode($xml, true));
         }
         if (is_string($xml)){
@@ -97,10 +98,10 @@ class XmlConverter
         if (is_a($xml, 'DOMDocument')){
             return XmlParser::DOMToSimple($xml);
         }
-        if (Utils::isStringKeyed($xml)){
+        if (Arrays::isStringKeyed($xml)){
             return XmlParser::DOMToSimple(Xmlify::xmlify($xml));
         }
-        if (Utils::isJson($xml)){
+        if (Strings::isJson($xml)){
             return XmlParser::DOMToSimple(Xmlify::xmlify(json_decode($xml, true)));
         }
         if (is_string($xml)){
