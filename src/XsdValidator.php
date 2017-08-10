@@ -2,9 +2,7 @@
 
 namespace Gunsobal\Xmlary;
 
-include_once 'XmlParser.php';
-
-use Gunsobal\Xmlary\XmlParser;
+use Gunsobal\Xmlary\XmlConverter;
 
 /**
  * Validates XML against an XSD schema
@@ -20,6 +18,6 @@ class XsdValidator
      * @return boolean
      */
     public static function validate($xml, $xsd){
-        return XmlParser::toDom($xml)->schemaValidate($xsd);
+        return XmlConverter::toDom($xml)->schemaValidate($xsd);
     }
 }
