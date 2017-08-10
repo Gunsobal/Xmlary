@@ -121,8 +121,8 @@ class Xmlify
                 if (self::isAttributes($value)){
                     self::buildDOMNode($xml, $node, $key, $attrs);
                 } else {
-                    $node = self::buildDOMNode($xml, $node, $key, $attrs);
-                    self::recursiveXmlify($value, $xml, $node);
+                    $newnode = self::buildDOMNode($xml, $node, $key, $attrs);
+                    self::recursiveXmlify($value, $xml, $newnode);
                 }
             } else {
                 if (is_array($value)){
