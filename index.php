@@ -11,7 +11,7 @@ $arr = [
     'Message' => [
         'MyMessage' => [
             'a' => true,
-            'c' => false,
+            'c' => 0,
         ],
         'MySecNode' => [
             'a' => true

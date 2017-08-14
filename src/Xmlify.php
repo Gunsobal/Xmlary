@@ -188,7 +188,7 @@ class Xmlify
      */
     protected static function buildDOMNode($document, $parent, $name, $attrs, $value = null){
         $value = Strings::boolToString($value);
-        $node = ($value == null ? $document->createElement($name) : $document->createElement($name, $value));
+        $node = ($value === null ? $document->createElement($name) : $document->createElement($name, $value));
         foreach ($attrs as $a => $v){
             $node->setAttribute($a, $v);
         }
