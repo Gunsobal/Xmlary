@@ -187,6 +187,7 @@ class Xmlify
      * Build a DOMNode attached to a parent
      */
     protected static function buildDOMNode($document, $parent, $name, $attrs, $value = null){
+        $value = Strings::boolToString($value);
         $node = ($value == null ? $document->createElement($name) : $document->createElement($name, $value));
         foreach ($attrs as $a => $v){
             $node->setAttribute($a, $v);
@@ -206,6 +207,7 @@ class Xmlify
         if (Strings::isEmptyString($value)){
             return "<$key$attrs />\n";
         } else {
+            $value = Strings::boolToString($value);
             return "<$key$attrs>$value</$key>\n";
         }
     }

@@ -10,13 +10,13 @@ use Gunsobal\Xmlary\XmlMessage;
 $arr = [
     'Message' => [
         'MyMessage' => [
-            'a' => 'b',
-            'c' => 'd'
+            'a' => true,
+            'c' => false,
         ],
         'MySecNode' => [
-            'a' => 'b'
+            'a' => true
         ],
-        'MyThird' => ''
+        'MyThird' => null
     ]
 ];
 
