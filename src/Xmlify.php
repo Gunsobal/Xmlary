@@ -26,7 +26,7 @@ class Xmlify
      * @return string
      */
     public static function stringify($arr, $depth = 0){
-        if (is_array($arr) && Arrays::isStringKeyed($arr)){
+        if (Arrays::isStringKeyed($arr) && Arrays::isStringKeyed(reset($arr))){
             return self::recursiveStringify($arr, $depth);
         }
         throw new XmlifyException("Invalid argument for stringify function");
@@ -40,7 +40,7 @@ class Xmlify
      * @return \DOMDocument
      */
     public static function xmlify($arr, $version = "1.0", $encoding = "UTF-8"){
-        if (is_array($arr) && Arrays::isStringKeyed($arr)){
+        if (Arrays::isStringKeyed($arr) && Arrays::isStringKeyed(reset($arr))){
             $xml = new DOMDocument( $version, $encoding);
             $xml->preserveWhiteSpace = false;
             $xml->formatOutput = true;
@@ -96,7 +96,11 @@ class Xmlify
                             $attrArray = self::getAttributes($value[$i]);
                             self::validateAttributes($attrArray);
                             $attrs = self::stringifyAttributes($attrArray); // Get attributes specific to this node
-                            $str .= "$tabs<$key$attrs>\n" . self::recursiveStringify($value[$i], $depth + 1) . "$tabs</$key>\n"; // Go 1 level deeper
+                            if (count($value[$i]) > 0){
+                                $str .= "$tabs<$key$attrs>\n" . self::recursiveStringify($value[$i], $depth + 1) . "$tabs</$key>\n"; // Go 1 level deeper
+                            } else {
+                                $str .= "$tabs<$key$attrs />\n";
+                            }
                         }
                     }
                 } else {
@@ -169,6 +173,9 @@ class Xmlify
             if (!self::validAttr($a)){
                 throw new XmlifyException("Invalid attribute name: '$a'");
             }
+            if (is_array($v)){
+                throw new XmlifyException("Invalid attribute value for '$a', can't be array");
+            }
         }
     }
 
@@ -190,6 +197,7 @@ class Xmlify
         $value = Strings::boolToString($value);
         $node = ($value === null ? $document->createElement($name) : $document->createElement($name, $value));
         foreach ($attrs as $a => $v){
+            $v = Strings::boolToString($v);
             $node->setAttribute($a, $v);
         }
         if ($parent === null) {
@@ -219,6 +227,7 @@ class Xmlify
         $attrs = '';
         if (!is_array($arr)) return $attrs;
         foreach ($arr as $attr => $value){
+            $value = Strings::boolToString($value);
             $attrs .= " $attr=\"$value\"";
         }
         return $attrs;

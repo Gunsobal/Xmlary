@@ -2,23 +2,36 @@
 
 require 'vendor/autoload.php';
 
-use Gunsobal\Xmlary\XmlParser;
 use Gunsobal\Xmlary\Xmlify;
-use Gunsobal\Xmlary\XmlConverter;
-use Gunsobal\Xmlary\XmlMessage;
 
 $arr = [
-    'Message' => [
-        'MyMessage' => [
-            'a' => true,
-            'c' => 0,
+    'Order' => [
+        '@attributes' => [
+            'id' => 1,
+            'payment_method' => 'visa'
         ],
-        'MySecNode' => [
-            'a' => true
-        ],
-        'MyThird' => null
+        'Products' => [
+            'Product' => [
+                [
+                    '@attributes' => ['valid' => true, 'limited' => false],
+                    'Number' => 1,
+                    'Element' => [
+                        '@attributes' => [
+                            'name' => 'Tshirt'
+                        ]
+                    ]
+                ],
+                [
+                    'Number' => 2,
+                    'Element' => [
+                        '@attributes' => [
+                            'name' => 'Pants'
+                        ]
+                    ]
+                ],
+            ]
+        ]
     ]
 ];
-
 echo Xmlify::xmlify($arr)->saveXML();
 echo Xmlify::stringify($arr);
