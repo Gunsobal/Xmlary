@@ -1,5 +1,5 @@
 # XmlMessage
-This class acts as a superclass for classes which build XML documents using Xmlify by utilizing the factory pattern. Its purpose is to provide a convenient base upon which to build classes which encapsulate logic to generate XML using Xmlify by following a few simple conventions. 
+This class acts as a superclass for classes which build XML documents by utilizing the factory pattern. Its purpose is to provide a convenient base for classes which encapsulate logic to generate XML using Xmlify by following a few simple conventions. 
 
 If you are unfamiliar with Xmlify then review the documentation for it [here](xmlify.md).
 
@@ -71,7 +71,7 @@ $msg->toXml();
 
 __NOTE:__ The build function does not need to be public, but it's often convenient in case this particular bit of XML generation needs to be re-used.
 
-However we do not want to hardcode the values for our XML so we need to specify some parameters for our class. Ideally we would want to have properties for any of the fields which contain values that might change so our class would do the following changes to our class
+However we do not want to hardcode the values for our XML so we need to specify some parameters for our class. Ideally we would want to have properties for any of the fields which contain values that might change so we would do the following changes to our class
 
 ```php
 class ProductOrder extends XmlMessage
@@ -122,7 +122,7 @@ protected $_required = [
 __NOTE:__ There are more properties you can define to change the behaviour of your XmlMessage class, see __API__ section.
 
 ## API
-Classes inheriting the XmlMessage class will get set up with a factory pattern as well as some properties to control the configuration of the XML generation. Any settings properties defined in the base class will be have an underscore prefix in their name.
+Classes inheriting the XmlMessage class will get set up with a factory pattern as well as some properties to control the configuration of the XML generation. Any settings properties defined in the base class will have an underscore prefix in their name.
 
 ### Functions
 * toString() - Generates an Xmlify stringified string by default
