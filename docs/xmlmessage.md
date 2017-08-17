@@ -122,7 +122,7 @@ protected $_required = [
 __NOTE:__ There are more properties you can define to change the behaviour of your XmlMessage class, see __API__ section.
 
 ## API
-Classes inheriting the XmlMessage class will get set up with a factory pattern as well as some properties to control the configuration of the XML generation. Any settings properties defined in the base class will be have an underscore prefix in their name.
+Classes inheriting the XmlMessage class will get set up with a factory pattern as well as some properties to control the configuration of the XML generation. Any settings properties defined in the base class will have an underscore prefix in their name.
 
 ### Functions
 * toString() - Generates an Xmlify stringified string by default
