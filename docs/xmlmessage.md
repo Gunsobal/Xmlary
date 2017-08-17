@@ -110,7 +110,7 @@ $msg->toXml();
 
 __NOTE:__ Any key defined in the array passed into the XML message will be accessible as a property in that class as per the factory pattern.
 
-To facilitate defensive programming, it is easy to setup the class so it throws an XmlMessageException if it doesn't get the properties it needs to generate the XML. All that needs to be done is specify a property with an array of required properties where each key corresponds to the property, and its value will be the message displayed with the exception.
+To facilitate defensive programming, it is easy to setup the class so it throws an XmlMessageException if it doesn't get the properties it needs to generate the XML. All that needs to be done is specifying a property with an array of required properties where each key corresponds to the property, and its value will be the message displayed with the exception.
 
 ```php
 protected $_required = [
