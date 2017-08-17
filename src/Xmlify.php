@@ -26,7 +26,7 @@ class Xmlify
      * @return string
      */
     public static function stringify($arr, $depth = 0){
-        if (Arrays::isStringKeyed($arr) && Arrays::isStringKeyed(reset($arr))){
+        if (Arrays::isStringKeyed($arr) && self::validRoot(reset($arr))){
             return self::recursiveStringify($arr, $depth);
         }
         throw new XmlifyException("Invalid argument for stringify function");
@@ -40,7 +40,7 @@ class Xmlify
      * @return \DOMDocument
      */
     public static function xmlify($arr, $version = "1.0", $encoding = "UTF-8"){
-        if (Arrays::isStringKeyed($arr) && Arrays::isStringKeyed(reset($arr))){
+        if (Arrays::isStringKeyed($arr) && self::validRoot(reset($arr))){
             $xml = new DOMDocument( $version, $encoding);
             $xml->preserveWhiteSpace = false;
             $xml->formatOutput = true;
@@ -249,5 +249,12 @@ class Xmlify
      */
     protected static function validAttr($attr){
         return preg_match('/^[a-z\_][\w\-\:\.]*$/i', $attr);
+    }
+
+    /**
+     * Validates root element
+     */
+    protected static function validRoot($el){
+        return count($el) == 1 || Arrays::isStringKeyed($el);
     }
 }
