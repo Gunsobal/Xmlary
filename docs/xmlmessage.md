@@ -71,7 +71,7 @@ $msg->toXml();
 
 __NOTE:__ The build function does not need to be public, but it's often convenient in case this particular bit of XML generation needs to be re-used.
 
-However we do not want to hardcode the values for our XML so we need to specify some parameters for our class. Ideally we would want to have properties for any of the fields which contain values that might change so our class would do the following changes to our class
+However we do not want to hardcode the values for our XML so we need to specify some parameters for our class. Ideally we would want to have properties for any of the fields which contain values that might change so we would do the following changes to our class
 
 ```php
 class ProductOrder extends XmlMessage
