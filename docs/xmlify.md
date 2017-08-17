@@ -209,7 +209,7 @@ $arr = [
 ];
 ```
 
-Will be converted to 
+Will get converted to 
 
 ```xml
 <Drinks>
@@ -227,10 +227,10 @@ __NOTE:__ If you leave a trailing attributes element, Xmlify will assume you wan
 Xmlify provides access to 3 static functions
 
 ### Function xmlify
-The xmlify function will recursively build a DOMDocument object and return it so the script calling this function can further manipulate the object such as validate against an .xsd schema. You can use DOMDocument's saveXML() function to get your XML string.
+The xmlify function will recursively build a DOMDocument object and return it so the script calling this function can further manipulate the object such as validate against an .xsd schema. You can use DOMDocument's saveXML() function to get your XML string. The xmlify function requires the array as a parameter and optional parameters for the document version and encoding.
 
 ### Function stringify
 The stringify function uses string concatenation to generate a string with XML markup. It will not contain the <?xml version="1.0"?> head, like the xmlify function, as its original purpose was to generate XML which would get nested within other XML documents. It accepts the associative array as a required parameter along with an optional parameter to specify the starting tab indentation, default 0.
 
 ### Function htmlify
-This is just a wrapper around calling htmlspecialchars on the stringify function output. It will return the same string as the stringify except with html entitites where applicable.
+This is just a wrapper around calling htmlspecialchars on the stringify function output. It will return the same string as the stringify except with html entitites where applicable. It accepts the same paramters as stringify.

@@ -34,7 +34,7 @@ class XmlMessage
     /** @var array $_required Overwrite in derivative class in a way that each key in $_required is a requied field in the message, with its value being a custom error message **/
     protected $_required = [];
 
-    public function __construct($arr){
+    public function __construct($arr = []){
         $this->_data = $arr;
         if (!$this->_name) $this->_name = Objects::getClassBasename($this); // Set this class' name
         if (!$this->_build) $this->_build = 'build'; // Set this class' build function. default build
