@@ -1,5 +1,5 @@
 # XmlMessage
-This class acts as a superclass for classes which build XML documents using Xmlify by utilizing the factory pattern. Its purpose is to provide a convenient base upon which to build classes which encapsulate logic to generate XML using Xmlify by following a few simple conventions. 
+This class acts as a superclass for classes which build XML documents by utilizing the factory pattern. Its purpose is to provide a convenient base for classes which encapsulate logic to generate XML using Xmlify by following a few simple conventions. 
 
 If you are unfamiliar with Xmlify then review the documentation for it [here](xmlify.md).
 
