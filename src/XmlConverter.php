@@ -8,14 +8,14 @@ use Gunsobal\Utils\Strings;
 use Gunsobal\Utils\Arrays;
 
 /**
- * This class' role is to provide an easy interface to convert between arrays, xml and json
+ * This class' role is to provide a convenient API to convert between arrays, XML and Json
  *
- * @author Gunso Baldursson
+ * @author Gunnar Baldursson
  */
 class XmlConverter
 {
     /**
-     * convert XML to JSON string from string, DOMDocument, SimpleXMLElement or string keyed array
+     * Convert XML to JSON string from string, DOMDocument, SimpleXMLElement or string keyed array
      * @param mixed $xml string, DOMDocument, SimpleXMLElement or string keyed array
      * @return string
      */
