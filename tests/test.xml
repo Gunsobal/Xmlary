@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Message>
+  <Subject>Some title</Subject>
+  <Content>
+    <Images>
+      <Image>a.png</Image>
+      <Image>b.png</Image>
+      <Image>c.png</Image>
+    </Images>
+    <Text>
+      <Header>
+        <h1>Bla</h1>
+      </Header>
+      <Body>P1</Body>
+      <Body>P2</Body>
+    </Text>
+  </Content>
+</Message>
+%%
+<?xml version="1.0" encoding="UTF-8"?>
+<Message class="testmessage">
+  <Subject id="1">Some title</Subject>
+  <Content>
+    <Images>
+      <Image figure="img">a.png</Image>
+      <Image figure="img">b.png</Image>
+      <Image>c.png</Image>
+    </Images>
+    <Text test="0">
+      <Header hr="hs">
+        <h1>Bla</h1>
+      </Header>
+      <Body>P1</Body>
+      <Body>P2</Body>
+    </Text>
+    <Text a="b"/>
+  </Content>
+</Message>
+%%
+<?xml version="1.0" encoding="UTF-8"?>
+<Simple>
+  <Test>Singlest</Test>
+</Simple>
