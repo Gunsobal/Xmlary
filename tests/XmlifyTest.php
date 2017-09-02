@@ -104,12 +104,23 @@ class XmlifyTest extends PHPUnit_Framework_TestCase
     }
 
     /**
+     * Test xmlify
+     * @dataProvider domProvider
+     */
+    public function testXmlify($a, $s){
+        $x = Xmlify::xmlify($a);
+        $this->assertTrue(is_a($x, 'DOMDocument'));
+        $this->assertTrue(Support::CompareXMLStrings($x->saveXML(), $s));
+    }
+
+    /**
      * Test htmlify
      */
      public function testHtmlify(){
          $s = Xmlify::htmlify(['a' => 'b']);
          $this->assertTrue(is_string($s));
-     }
+        }
+        
 
     public function simpleProvider(){
         $a = $this->getXmlifyArr();
