@@ -217,11 +217,10 @@ Will get converted to
   <Drink Color="Pink">Apple</Drink>
   <Drink Color="Green">Lime</Drink>
   <Drink>Coke</Drink>
-  <Drink/>
 </Drinks>
 ```
 
-__NOTE:__ If you leave a trailing attributes element, Xmlify will assume you wanted an empty element with attributes.
+__NOTE:__ Xmlify will not render an XML node when processing array of arrays. To get an empty element with attributes, add an empty element after the attributes array.
 
 ## API
 Xmlify provides access to 3 static functions

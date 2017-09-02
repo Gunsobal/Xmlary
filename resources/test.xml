@@ -19,25 +19,37 @@
 %%
 <?xml version="1.0" encoding="UTF-8"?>
 <Message class="testmessage">
-  <Subject id="1">Some title</Subject>
-  <Content>
+  <Subject />
+  <Content class="sigh">
     <Images>
       <Image figure="img">a.png</Image>
       <Image figure="img">b.png</Image>
-      <Image>c.png</Image>
+      <Image />
+      <Image>
+        <Pic>
+          <A href="a">C</A>
+          <B>D</B>
+        </Pic>
+      </Image>
     </Images>
-    <Text test="0">
+    <Text test="0" title="b">
       <Header hr="hs">
         <h1>Bla</h1>
       </Header>
-      <Body>P1</Body>
+      <Body body="page">P1</Body>
       <Body>P2</Body>
     </Text>
-    <Text a="b"/>
+    <Text a="b" />
   </Content>
 </Message>
 %%
 <?xml version="1.0" encoding="UTF-8"?>
-<Simple>
-  <Test>Singlest</Test>
+<Simple class="1">
+  <Test p="true">Singlest</Test>
 </Simple>
+%%
+<?xml version="1.0" encoding="UTF-8"?>
+<Solo a="b">A</Solo>
+%%
+<?xml version="1.0" encoding="UTF-8"?>
+<Solo />

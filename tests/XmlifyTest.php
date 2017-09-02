@@ -50,13 +50,8 @@ class XmlifyTest extends PHPUnit_Framework_TestCase
         Xmlify::xmlify(0);
     }
 
-    public function provider(){
-        return [
-            [
-                [
-                    'El' => [ 'Sub' => ['Val', 'V']]
-                ]
-            ]
-        ];
+    public function stringProvider(){
+        $file = file_get_contents(__DIR__ . '\\..\\resources\\test.xml');
+        return [ explode('%%', $file) ];
     }
 }

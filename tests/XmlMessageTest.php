@@ -17,25 +17,4 @@ class XmlMessageTest extends PHPUnit_Framework_TestCase
         $this->assertTrue(is_object($x));
         unset($x);
     }
-
-    /**
-     * Test factory pattern setup
-     */
-    public function testFactoryPattern(){
-        $x = new XmlMessage([
-            'key' => 'value'
-        ]);
-        $this->assertTrue($x->key == 'value');
-        unset($x);
-    }
-
-    /**
-     * Test factory pattern fail
-     * @expectedException Exception
-     */
-     public function testFactoryPatternFail(){
-         $x = new XmlMessage([]);
-         $x->key;
-         unset($x);
-     }
 }

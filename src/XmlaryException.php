@@ -10,4 +10,3 @@ use \Exception;
 class XmlaryException extends Exception { }
 class XmlifyException extends XmlaryException { }
 class XmlMessageException extends XmlaryException { }
-class XmlConverterException extends XmlaryException { }

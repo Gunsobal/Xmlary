@@ -4,8 +4,8 @@ namespace Gunsobal\Xmlary;
 
 include_once 'XmlaryException.php';
 
-use Gunsobal\Utils\Arrays;
 use Gunsobal\Utils\Strings;
+use Gunsobal\Utils\Arrays;
 
 use \DOMDocument;
 
@@ -19,20 +19,21 @@ use \DOMDocument;
  */
 class Xmlify
 {
-    /**
+	/**
      * Convert associative array to string
      * @param array $arr An array to convert into XML string
      * @param int $depth Tab indentation preceding first node, default 0
      * @return string
      */
-    public static function stringify($arr, $depth = 0){
-        if (Arrays::isStringKeyed($arr) && self::validRoot(reset($arr))){
-            return self::recursiveStringify($arr, $depth);
-        }
-        throw new XmlifyException("Invalid argument for stringify function");
-    }
+	public static function stringify($arr, $depth = 0){
+		if (Arrays::isStringKeyed($arr)){
+			return self::recursiveStringify(key($arr), reset($arr), $depth);
+		} else {
+			throw new XmlifyException("Invalid arguments for stringiy function, must be string keyed array");
+		}
+	}
 
-    /**
+	/**
      * Convert associative array to DOMDocument
      * @param array $arr An array to convert into XML
      * @param string $version Version head on the XML document, default 1.0
@@ -40,221 +41,139 @@ class Xmlify
      * @return \DOMDocument
      */
     public static function xmlify($arr, $version = "1.0", $encoding = "UTF-8"){
-        if (Arrays::isStringKeyed($arr) && self::validRoot(reset($arr))){
+        if (Arrays::isStringKeyed($arr)){
             $xml = new DOMDocument( $version, $encoding);
             $xml->preserveWhiteSpace = false;
             $xml->formatOutput = true;
-            return self::recursiveXmlify($arr, $xml);
+            return self::recursiveXmlify(key($arr), reset($arr), $xml);
         }
-        throw new XmlifyException("Invalid argument for xmlify function");
+        throw new XmlifyException("Invalid argument for xmlify function, must be string keyed array");
     }
 
-    /**
+	/**
      * Convert associative array to string with html special chars
      * @param array $arr An array to convert into XML string
      * @param int $depth Tab indentation preceding first node, default 0
      * @return string
      */
-    public static function htmlify($arr, $depth = 0){
+    public static function htmlify($arr, $formatted = true, $depth = 0){
        return htmlspecialchars(self::stringify($arr, $depth));
     }
 
-    /**
+	/**
      * Recursively build xml markup style string from associative array
      */
-    protected static function recursiveStringify($arr, $depth){
-        $str = '';
-        $tabs = str_repeat("\t", $depth);
-        foreach ($arr as $key => $value){
-            if ($key === '@attributes') continue; // Ignore stringifying for control keys
-            self::validateElement($key);
-            $attrArray = self::getAttributes($value);
-            self::validateAttributes($attrArray);
-            $attrs = self::stringifyAttributes($attrArray); // Get attributes for this node
-            
-            if (Arrays::isStringKeyed($value)){ // If content of this node is string keyed, create node and go level deeper
-                if (count($value) === 0 || self::isAttributes($value)){ // Enable empty tag with attributes
-                    $str .= $tabs . self::stringifyXmlNode($key, $attrs, '');
-                } else {
-                    $str .= "$tabs<$key$attrs>\n" . self::recursiveStringify($value, $depth  + 1) . "$tabs</$key>\n";
-                }
-            } else {
-                if (is_array($value)){ // If content is arrayed but not string keyed, multiple nodes with same name
-                    for ($i = 0; $i < count($value); ++$i){
-                        if (!is_array($value[$i])){ // If content within multiple node is not complex
-                            $attrs = self::stringifyAttributes($attrArray);
-                            $str .= $tabs . self::stringifyXmlNode($key, $attrs, $value[$i]);
-                        } else { // If content within mulitple node is complex
-                            if (self::isAttributes($value[$i])) {
-                                $attrArray = self::getAttributes($value[$i]); // Overwrite attributes if a later attribute array is found
-                                self::validateAttributes($attrArray);
-                                if ($i == count($value) - 1 || ($i < count($value) - 1 && self::isAttributes($value[$i + 1]))){ //If next is attributes or this is last item in array
-                                    $str .= $tabs . self::stringifyXmlNode($key, self::stringifyAttributes($attrArray), '');
-                                }
-                                continue;  //Don't print extra nodes for attribute value unless next value is attributes
-                            }
-                            $attrArray = self::getAttributes($value[$i]);
-                            self::validateAttributes($attrArray);
-                            $attrs = self::stringifyAttributes($attrArray); // Get attributes specific to this node
-                            if (count($value[$i]) > 0){
-                                $str .= "$tabs<$key$attrs>\n" . self::recursiveStringify($value[$i], $depth + 1) . "$tabs</$key>\n"; // Go 1 level deeper
-                            } else {
-                                $str .= "$tabs<$key$attrs />\n";
-                            }
-                        }
-                    }
-                } else {
-                    $str .= $tabs . self::stringifyXmlNode($key, $attrs, $value);
-                }
-            }
-        }
-        return $str;
-    }
+	protected static function recursiveStringify($key, $value, $depth, $attr = ''){
+		self::validateTag($key);
+		$tabs = str_repeat("\t", $depth); // Create tab indentation
+		if (!is_array($value) || !count($value)){ // Base case, create <key>value</key> with attributes if any
+			return self::isEmptyElement($value) ? "$tabs<$key$attr />\n" : "$tabs<$key$attr>" . Strings::boolToString($value) . "</$key>\n";
+		}
+		$xml = ''; // Return string
+		if (Arrays::isStringKeyed($value)){ // Handle nested associative array
+			if (array_key_exists('@attributes', $value)) $attr = self::stringifyAttributes($value['@attributes']); // Set attributes string if any attributes are defined
+			$insert = ''; // String of nested elements
+			foreach ($value as $k => $v){ // Build nested element string
+				if ($k !== '@attributes') $insert .= self::recursiveStringify($k, $v, $depth + 1);
+			}
+			$xml .= self::isEmptyElement($insert) ? "$tabs<$key$attr />\n" : "$tabs<$key$attr>\n$insert$tabs</$key>\n"; // Build <key>longstring</key>
+		} else { // Handle value is array but not keyed, multiple keys with same name
+			foreach ($value as $v){
+				if (is_array($v) && array_key_exists('@attributes', $v) && count($v) === 1){ // If attributes exist, set attr string value or overwrite if it has already been set
+					$attr = self::stringifyAttributes($v['@attributes']);
+					continue;
+				}
+				$xml .= self::recursiveStringify($key, $v, $depth, $attr);
+			}
+		}
+		return $xml;
+	}
 
-    /**
-     * Recursively build DOMDocument from associative array, same structure as stringify
-     */
-    protected static function recursiveXmlify($arr, $xml, $node = null){
-        foreach ($arr as $key => $value){
-            if ($key === '@attributes') continue;
-            self::validateElement($key);
-            $attrs = self::getAttributes($value);
-            self::validateAttributes($attrs);
-            
-            if (Arrays::isStringKeyed($value)){
-                if (self::isAttributes($value)){
-                    self::buildDOMNode($xml, $node, $key, $attrs);
-                } else {
-                    $newnode = self::buildDOMNode($xml, $node, $key, $attrs);
-                    self::recursiveXmlify($value, $xml, $newnode);
-                }
-            } else {
-                if (is_array($value)){
-                    for ($i = 0; $i < count($value); ++$i){
-                        if (!is_array($value[$i])){
-                            self::buildDOMNode($xml, $node, $key, $attrs, $value[$i]);
-                        } else {
-                            if (self::isAttributes($value[$i])){
-                                $attrs = self::getAttributes($value[$i]);
-                                self::validateAttributes($attrs);
-                                if ($i == count($value) - 1 || ($i < count($value) - 1 && self::isAttributes($value[$i + 1]))){
-                                    self::buildDOMNode($xml, $node, $key, $attrs);
-                                }
-                                continue;
-                            } 
-                            $attrs = self::getAttributes($value[$i]);
-                            self::validateAttributes($attrs);
-                            $n = self::buildDOMnode($xml, $node, $key, $attrs);
-                            self::recursiveXmlify($value[$i], $xml, $n);
-                        }
-                    }
-                } else {
-                    self::buildDOMNode($xml, $node, $key, $attrs, $value);
-                }
-            }
-        }
-        return $xml;
-    }
+	/**
+	 * Recursively build DOMDocument from associative array, follows same flow as stringifyRecursive
+	 */
+	protected static function recursiveXmlify($key, $value, $doc, $parent = null, $attr = []){
+		if (!is_array($value) || !count($value)){ // base case
+			self::buildDOMNode($doc, $parent, $key, $attr, $value);
+			return $doc;
+		}
+		if (Arrays::isStringKeyed($value)){ // handle assoc array
+			if (array_key_exists('@attributes', $value)){
+				$attr = $value['@attributes'];
+				unset($value['@attributes']); // Get attributes key, then delete it
+			} 
+			$newparent = self::buildDOMNode($doc, $parent, $key, $attr);
+			foreach ($value as $k => $v){
+				self::recursiveXmlify($k, $v, $doc, $newparent);
+			}
+		} else {
+			foreach ($value as $v){
+				if (is_array($v) && array_key_exists('@attributes', $v) && count($v) === 1){ // Set attr or overwrite it
+					$attr = $v['@attributes'];
+					continue;
+				}
+				self::recursiveXmlify($key, $v, $doc, $parent, $attr);
+			}
+		}
 
-    /**
-     * Validates XML element according to standards on w3
-     */
-    protected static function validateElement($key){
-        if (!self::validTag($key)){
-            throw new XmlifyException("Invalid tag name: '$key'");
-        }
-    }
+		return $doc;
+	}
 
-    /**
-     * Validate attributes array
-     */
-    protected static function validateAttributes($attr){
-        foreach ($attr as $a => $v){
-            if (!self::validAttr($a)){
-                throw new XmlifyException("Invalid attribute name: '$a'");
-            }
-            if (is_array($v)){
-                throw new XmlifyException("Invalid attribute value for '$a', can't be array");
-            }
-        }
-    }
-
-    /** 
-     * Find attributes or none for a node
-     */
-    protected static function getAttributes($arr){
-        if (!is_array($arr)) return [];
-        if (array_key_exists('@attributes', $arr)){ // Get this level attributes
-            return $arr['@attributes'];
-        } 
-        return [];
-    }
-
-    /**
-     * Build a DOMNode attached to a parent
-     */
-    protected static function buildDOMNode($document, $parent, $name, $attrs, $value = null){
-        $value = Strings::boolToString($value);
-        $node = ($value === null ? $document->createElement($name) : $document->createElement($name, $value));
+	/**
+	 * Build DOM node
+	 */
+	protected static function buildDOMNode($doc, $parent, $name, $attrs, $value = null){
+		$value = self::isEmptyElement($value) ? null : Strings::boolToString($value);
+        $node = ($value === null ? $doc->createElement($name) : $doc->createElement($name, $value));
         foreach ($attrs as $a => $v){
             $v = Strings::boolToString($v);
             $node->setAttribute($a, $v);
         }
-        if ($parent === null) {
-            $document->appendChild($node);
-        } else {
-            $parent->appendChild($node);
-        }
+        if ($parent === null)   $doc->appendChild($node);
+        else 					$parent->appendChild($node);
         return $node;
-    }
+	}
 
-    /**
-     * Build an xml node in string
-     */
-    protected static function stringifyXmlNode($key, $attrs, $value){
-        if (Strings::isEmptyString($value)){
-            return "<$key$attrs />\n";
-        } else {
-            $value = Strings::boolToString($value);
-            return "<$key$attrs>$value</$key>\n";
-        }
-    }
 
-    /**
-     * Build attributes string
-     */
-    protected static function stringifyAttributes($arr){
-        $attrs = '';
-        if (!is_array($arr)) return $attrs;
-        foreach ($arr as $attr => $value){
-            $value = Strings::boolToString($value);
-            $attrs .= " $attr=\"$value\"";
-        }
-        return $attrs;
-    }
+	/**
+	 * Check if element is an empty value
+	 */
+	protected static function isEmptyElement($el){
+		return is_array($el) ? !count($el) : Strings::isEmptyString($el);
+	}
 
-    protected static function isAttributes($arr){
-        return is_array($arr) && array_key_exists('@attributes', $arr) && count($arr) === 1;
-    }
+	/**
+	 * Convert attributes array to string if valid, else throw exception
+	 */
+	protected static function stringifyAttributes($attrs){
+		$str = '';
+		foreach ($attrs as $a => $b){
+			self::validateAttribute($a, $b); 
+			$str .= " $a=\"$b\"";
+		}
+		return $str;
+	}
 
-    /**
+	/**
      * Validate XML tag
      */
-    protected static function validTag($tag){
-        return preg_match('/^(?!xml.*)[a-z\_][\w\-\:\.]*$/i', $tag);
+    protected static function validateTag($tag){
+		if (! preg_match('/^(?!xml.*)[a-z\_][\w\-\:\.]*$/i', $tag)) {
+			throw new XmlifyException("Invalid tag name: '$tag'");
+		}
+		return true;
     }
 
     /**
-     * Validate attribute
+     * Pattern for attributes
      */
-    protected static function validAttr($attr){
-        return preg_match('/^[a-z\_][\w\-\:\.]*$/i', $attr);
-    }
-
-    /**
-     * Validates root element
-     */
-    protected static function validRoot($el){
-        return count($el) == 1 || Arrays::isStringKeyed($el);
+    protected static function validateAttribute($attr, $value){
+		if (! preg_match('/^[a-z\_][\w\-\:\.]*$/i', $attr)){
+			throw new XmlifyException("Invalid attribute name: '$attr'");
+		}
+		if (is_array($value)){
+            throw new XmlifyException("Invalid attribute value for '$attr', can't be array"); 
+		}
+        return true;
     }
 }

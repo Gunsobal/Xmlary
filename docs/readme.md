@@ -1,7 +1,6 @@
 # Documentation
 * [Xmlify](xmlify.md)
 * [XmlMessage](xmlmessage.md)
-* [XmlParser](xmlparser.md)
-* [XmlConverter](xmlconverter.md)
-* [XsdValidator](xsdvalidator.md)
-* [XmlaryException](xmlaryexception.md)
+
+# XmlaryException
+All exceptions thrown by this package are subclasses of XmlaryException which is a subclass of \Exception.
