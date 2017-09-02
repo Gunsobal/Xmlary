@@ -2,6 +2,8 @@
 
 namespace Gunsobal\Xmlary;
 
+use Gunsobal\Xmlary\XmlaryException;
+
 class Support
 {
 	/**
@@ -21,10 +23,11 @@ class Support
 	
 	/**
     * Utility function to get a class' basename
-    * @param \stdClass $class Class object
+    * @param object $class Class object
     * @return string 
     */
     static public function getClassBasename($class){
+        if (!is_object($class)) throw new XmlaryException("[Support] $class must be an object");
         $names = explode('\\', get_class($class));
         return $names[count($names) - 1];
 	}

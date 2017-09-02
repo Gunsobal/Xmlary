@@ -4,7 +4,6 @@ namespace Gunsobal\Xmlary;
 
 use PHPUnit_Framework_TestCase;
 use Gunsobal\Xmlary\Support;
-use Gunsobal\Xmlary\XmlaryException;
 
 /**
  * Unit tests for Xmlify
@@ -21,7 +20,6 @@ class XmlifyTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test argument fail
      * @expectedException Gunsobal\Xmlary\XmlifyException
      */
     public function testXmlifyArgumentFail(){
@@ -30,7 +28,6 @@ class XmlifyTest extends PHPUnit_Framework_TestCase
 
     
     /**
-     * Test argument fail
      * @expectedException Gunsobal\Xmlary\XmlifyException
      */
     public function testHtmlifyArgumentFail(){
@@ -38,7 +35,6 @@ class XmlifyTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test argument fail
      * @expectedException Gunsobal\Xmlary\XmlifyException
      */
     public function testStringifyArgumentFail(){
@@ -46,7 +42,6 @@ class XmlifyTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test invalid element fail
      * @expectedException Gunsobal\Xmlary\XmlifyException
      */
     public function testXmlifyInvalidElement(){
@@ -54,7 +49,6 @@ class XmlifyTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test invalid element fail
      * @expectedException Gunsobal\Xmlary\XmlifyException
      */
     public function testStringifyInvalidElement(){
@@ -62,7 +56,6 @@ class XmlifyTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test invalid element fail
      * @expectedException Gunsobal\Xmlary\XmlifyException
      */
     public function testHtmlifyInvalidElement(){
@@ -70,7 +63,6 @@ class XmlifyTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test invalid attribute fail
      * @expectedException Gunsobal\Xmlary\XmlifyException
      */
     public function testXmlifyInvalidAttribute(){
@@ -78,7 +70,6 @@ class XmlifyTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test invalid attribute fail
      * @expectedException Gunsobal\Xmlary\XmlifyException
      */
     public function testStringifyInvalidAttribute(){
@@ -86,7 +77,6 @@ class XmlifyTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test invalid attribute fail
      * @expectedException Gunsobal\Xmlary\XmlifyException
      */
     public function testHtmlifyInvalidAttribute(){
@@ -94,7 +84,6 @@ class XmlifyTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test stringify
      * @dataProvider simpleProvider
      */
     public function testStringify($a, $s){
@@ -104,7 +93,6 @@ class XmlifyTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test xmlify
      * @dataProvider domProvider
      */
     public function testXmlify($a, $s){
@@ -113,39 +101,51 @@ class XmlifyTest extends PHPUnit_Framework_TestCase
         $this->assertTrue(Support::CompareXMLStrings($x->saveXML(), $s));
     }
 
-    /**
-     * Test htmlify
-     */
      public function testHtmlify(){
          $s = Xmlify::htmlify(['a' => 'b']);
          $this->assertTrue(is_string($s));
         }
         
 
+    /**
+     * Provides arrays as param1 and expected SimpleXML output as param2
+     */
     public function simpleProvider(){
-        $a = $this->getXmlifyArr();
-        $s = $this->getXMLStringsArr('simple.xml');
+        $a = $this->makeXmlifyExampleArrays();
+        $s = $this->loadXMLStrings('simple.xml');
         $data = [];
         for ($i = 0; $i < count($a); ++$i)
             $data[] = [$a[$i], $s[$i]];
         return $data;
     }
 
+    /**
+     * Provides arrays as param1 and expected DOM output as param2
+     */
     public function domProvider(){
-        $a = $this->getXmlifyArr();
-        $s = $this->getXMLStringsArr('dom.xml');
+        $a = $this->makeXmlifyExampleArrays();
+        $s = $this->loadXMLStrings('dom.xml');
         $data = [];
         for ($i = 0; $i < count($a); ++$i)
             $data[] = [$a[$i], $s[$i]];
         return $data;
     }
 
-    private function getXMLStringsArr($filename){
+    /**
+     * Gets XML strings from resources folder
+     * @param string $filename
+     * @return array
+     */
+    private function loadXMLStrings($filename){
         $file = file_get_contents(__DIR__ . '\\..\\resources\\' . $filename);
         return explode('%%', $file);
     }
 
-    private function getXmlifyArr(){
+    /**
+     * Returns array of Xmlify test arrays
+     * @return array
+     */
+    private function makeXmlifyExampleArrays(){
         return [
             ['Solo' => 'a'],
             ['Solo' => ''],
