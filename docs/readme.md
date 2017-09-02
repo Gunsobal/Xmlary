@@ -1,6 +1,12 @@
 # Documentation
 * [Xmlify](xmlify.md)
 * [XmlMessage](xmlmessage.md)
+* [XmlaryException](xmlexception.md)
 
-# XmlaryException
-All exceptions thrown by this package are subclasses of XmlaryException which is a subclass of \Exception.
+# Changelog
+
+## v2.0.0 - 02.09.2017
+* Added changelog
+* Refactord Xmlify, might cause builds to fail if they were creating empty elements with attributes.
+* Removed XmlParser, XmlConverter and XsdValidator.
+* Updated documenation
