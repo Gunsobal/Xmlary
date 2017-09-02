@@ -1,0 +1,61 @@
+<?xml version="1.0"?>
+<Solo>a</Solo>
+%%
+<?xml version="1.0"?>
+<Solo />
+%%
+<?xml version="1.0"?>
+<Solo a="b">A</Solo>
+%%
+<?xml version="1.0"?>
+<Solo a="b" />
+%%
+<?xml version="1.0"?>
+<Simple class="1">
+  <Test p="true">Singlest</Test>
+</Simple>
+%%
+<?xml version="1.0"?>
+<Message>
+  <Subject>Some title</Subject>
+  <Content>
+    <Images>
+      <Image>a.png</Image>
+      <Image>b.png</Image>
+      <Image>c.png</Image>
+    </Images>
+    <Text>
+      <Header>
+        <h1>Bla</h1>
+      </Header>
+      <Body>P1</Body>
+      <Body>P2</Body>
+    </Text>
+  </Content>
+</Message>
+%%
+<?xml version="1.0"?>
+<Message class="testmessage">
+  <Subject />
+  <Content class="sigh">
+    <Images>
+      <Image figure="img">a.png</Image>
+      <Image figure="img">b.png</Image>
+      <Image />
+      <Image>
+        <Pic>
+          <A href="a">C</A>
+          <B>D</B>
+        </Pic>
+      </Image>
+    </Images>
+    <Text test="0" title="b">
+      <Header hr="hs">
+        <h1>Bla</h1>
+      </Header>
+      <Body body="page">P1</Body>
+      <Body>P2</Body>
+    </Text>
+    <Text a="b" />
+  </Content>
+</Message>

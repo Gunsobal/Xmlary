@@ -2,6 +2,7 @@
 * [Xmlify](xmlify.md)
 * [XmlMessage](xmlmessage.md)
 * [XmlaryException](xmlexception.md)
+* [Support](support.md)
 
 # Changelog
 
@@ -9,4 +10,5 @@
 * Added changelog
 * Refactord Xmlify, might cause builds to fail if they were creating empty elements with attributes.
 * Removed XmlParser, XmlConverter and XsdValidator.
-* Updated documenation
+* Updated documenation.
+* Merged my PHP Utils library with this library under Support class.

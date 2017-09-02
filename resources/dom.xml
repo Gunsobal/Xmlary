@@ -1,4 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<Solo>a</Solo>
+%%
+<?xml version="1.0" encoding="UTF-8"?>
+<Solo />
+%%
+<?xml version="1.0" encoding="UTF-8"?>
+<Solo a="b">A</Solo>
+%%
+<?xml version="1.0" encoding="UTF-8"?>
+<Solo a="b" />
+%%
+<?xml version="1.0" encoding="UTF-8"?>
+<Simple class="1">
+  <Test p="true">Singlest</Test>
+</Simple>
+%%
+<?xml version="1.0" encoding="UTF-8"?>
 <Message>
   <Subject>Some title</Subject>
   <Content>
@@ -42,14 +59,3 @@
     <Text a="b" />
   </Content>
 </Message>
-%%
-<?xml version="1.0" encoding="UTF-8"?>
-<Simple class="1">
-  <Test p="true">Singlest</Test>
-</Simple>
-%%
-<?xml version="1.0" encoding="UTF-8"?>
-<Solo a="b">A</Solo>
-%%
-<?xml version="1.0" encoding="UTF-8"?>
-<Solo />

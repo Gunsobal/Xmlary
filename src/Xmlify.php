@@ -2,10 +2,8 @@
 
 namespace Gunsobal\Xmlary;
 
-include_once 'XmlaryException.php';
-
-use Gunsobal\Utils\Strings;
-use Gunsobal\Utils\Arrays;
+use Gunsobal\Xmlary\Support;
+use Gunsobal\Xmlary\XmlaryException;
 
 use \DOMDocument;
 
@@ -26,7 +24,7 @@ class Xmlify
      * @return string
      */
 	public static function stringify($arr, $depth = 0){
-		if (Arrays::isStringKeyed($arr)){
+		if (Support::isStringKeyed($arr)){
 			return self::recursiveStringify(key($arr), reset($arr), $depth);
 		} else {
 			throw new XmlifyException("Invalid arguments for stringiy function, must be string keyed array");
@@ -41,7 +39,7 @@ class Xmlify
      * @return \DOMDocument
      */
     public static function xmlify($arr, $version = "1.0", $encoding = "UTF-8"){
-        if (Arrays::isStringKeyed($arr)){
+        if (Support::isStringKeyed($arr)){
             $xml = new DOMDocument( $version, $encoding);
             $xml->preserveWhiteSpace = false;
             $xml->formatOutput = true;
@@ -67,10 +65,10 @@ class Xmlify
 		self::validateTag($key);
 		$tabs = str_repeat("\t", $depth); // Create tab indentation
 		if (!is_array($value) || !count($value)){ // Base case, create <key>value</key> with attributes if any
-			return self::isEmptyElement($value) ? "$tabs<$key$attr />\n" : "$tabs<$key$attr>" . Strings::boolToString($value) . "</$key>\n";
+			return self::isEmptyElement($value) ? "$tabs<$key$attr />\n" : "$tabs<$key$attr>" . Support::boolToString($value) . "</$key>\n";
 		}
 		$xml = ''; // Return string
-		if (Arrays::isStringKeyed($value)){ // Handle nested associative array
+		if (Support::isStringKeyed($value)){ // Handle nested associative array
 			if (array_key_exists('@attributes', $value)) $attr = self::stringifyAttributes($value['@attributes']); // Set attributes string if any attributes are defined
 			$insert = ''; // String of nested elements
 			foreach ($value as $k => $v){ // Build nested element string
@@ -93,11 +91,12 @@ class Xmlify
 	 * Recursively build DOMDocument from associative array, follows same flow as stringifyRecursive
 	 */
 	protected static function recursiveXmlify($key, $value, $doc, $parent = null, $attr = []){
+		self::validateTag($key);
 		if (!is_array($value) || !count($value)){ // base case
 			self::buildDOMNode($doc, $parent, $key, $attr, $value);
 			return $doc;
 		}
-		if (Arrays::isStringKeyed($value)){ // handle assoc array
+		if (Support::isStringKeyed($value)){ // handle assoc array
 			if (array_key_exists('@attributes', $value)){
 				$attr = $value['@attributes'];
 				unset($value['@attributes']); // Get attributes key, then delete it
@@ -123,10 +122,11 @@ class Xmlify
 	 * Build DOM node
 	 */
 	protected static function buildDOMNode($doc, $parent, $name, $attrs, $value = null){
-		$value = self::isEmptyElement($value) ? null : Strings::boolToString($value);
+		$value = self::isEmptyElement($value) ? null : Support::boolToString($value);
         $node = ($value === null ? $doc->createElement($name) : $doc->createElement($name, $value));
         foreach ($attrs as $a => $v){
-            $v = Strings::boolToString($v);
+			self::validateAttribute($a, $v);
+            $v = Support::boolToString($v);
             $node->setAttribute($a, $v);
         }
         if ($parent === null)   $doc->appendChild($node);
@@ -139,7 +139,7 @@ class Xmlify
 	 * Check if element is an empty value
 	 */
 	protected static function isEmptyElement($el){
-		return is_array($el) ? !count($el) : Strings::isEmptyString($el);
+		return is_array($el) ? !count($el) : Support::isEmptyString($el);
 	}
 
 	/**
@@ -149,7 +149,7 @@ class Xmlify
 		$str = '';
 		foreach ($attrs as $a => $b){
 			self::validateAttribute($a, $b); 
-			$str .= " $a=\"$b\"";
+			$str .= " $a=\"" . Support::boolToString($b) . "\"";
 		}
 		return $str;
 	}
