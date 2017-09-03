@@ -43,7 +43,7 @@ class XmlMessage
         if (!method_exists($this, $this->_build)){
             throw new XmlMessageException("[$this->_name] The build method '$this->_build' is not defined");
         }
-        $this->validate($this->_required);
+        if (Support::isStringKeyed($this->_required)) $this->validate($this->_required);
     }
 
     public function __get($field){
