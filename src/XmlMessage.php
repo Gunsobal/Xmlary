@@ -87,7 +87,7 @@ class XmlMessage
             try {
                 $this->$field;
             } catch (XmlMessageException $e){
-                throw new XmlMessageException("[$this->_name] The key '$field' is required. $message");
+                throw new XmlMessageException("[$this->_name] The key '$field' is required. " . (is_string($message) ? $message : 'No message string provided.'));
             }
         }
     }
