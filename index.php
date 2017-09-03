@@ -5,14 +5,15 @@ require 'vendor/autoload.php';
 use Gunsobal\Xmlary\Xmlify;
 use Gunsobal\Xmlary\XmlMessage;
 
-class FailMessage extends XmlMessage
+class TestMessage extends XmlMessage
 {
-    protected $_required = ['abc' => ['mommy']];
-    protected $_build = 'buildfunc';
+    protected $_required = ['example' => 'message'];
 
-    public function buildfunc(){
-
+    public function build(){
+        return ['Nested' => $this->example];
     }
 }
 
-$x = new FailMessage([]);
+$x = new TestMessage(['example' => 'Val']);
+
+echo $x->toString();
