@@ -151,10 +151,10 @@ public function toDOM()
 /** @var string $_name The name of the root element in the xml message, defaults to class name **/
 protected $_name;
 
-/** @var string $_build The name of the derivative class' build method which returns an array for xmlify, defaults to build **/
+/** @var string $_build The name of the class' build method which returns an array for xmlify, defaults to build **/
 protected $_build;
 
-/** @var array $_required Overwrite in derivative class in a way that each key in $_required is a required field in the message, with its value being a custom error message **/
+/** @var array $_required Each key is a required field in the message, with its value being a custom error message **/
 protected $_required = [];
 ```
 
