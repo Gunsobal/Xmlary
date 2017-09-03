@@ -89,7 +89,7 @@ class XmlifyTest extends PHPUnit_Framework_TestCase
     public function testStringify($a, $s){
         $x = Xmlify::stringify($a);
         $this->assertTrue(is_string($x));
-        $this->assertTrue(Support::CompareXMLStrings($x, $s));
+        $this->assertTrue(Support::compareXMLStrings($x, $s));
     }
 
     /**
@@ -98,7 +98,7 @@ class XmlifyTest extends PHPUnit_Framework_TestCase
     public function testXmlify($a, $s){
         $x = Xmlify::xmlify($a);
         $this->assertTrue(is_a($x, 'DOMDocument'));
-        $this->assertTrue(Support::CompareXMLStrings($x->saveXML(), $s));
+        $this->assertTrue(Support::compareXMLStrings($x->saveXML(), $s));
     }
 
      public function testHtmlify(){

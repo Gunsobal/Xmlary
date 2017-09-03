@@ -68,7 +68,7 @@ class Support
      * @param string $s1 - Target substring
      * @return string
      */
-    static public function SubstrToFirst($str, $s1){
+    static public function substrToFirst($str, $s1){
         $i = strpos($str, $s1);
 		if ($i !== false) return substr($str, 0, $i);
 		return $str;
@@ -80,7 +80,7 @@ class Support
      * @param string $s1 - Target substring
      * @return string
      */
-    static public function SubstrToLast($str, $s1){
+    static public function substrToLast($str, $s1){
         $i = strrpos($str, $s1);
 		if ($i !== false) return substr($str, 0, $i);
 		return $str;
@@ -92,7 +92,7 @@ class Support
 	 * @param string $s2
 	 * @return boolean
 	 */
-	static public function CompareXMLStrings($s1, $s2){
+	static public function compareXMLStrings($s1, $s2){
 		$strip = '/\s+/';
 		$c1 = preg_replace($strip, '', simplexml_load_string(trim($s1))->asXML());
 		$c2 = preg_replace($strip, '', simplexml_load_string(trim($s2))->asXML());
