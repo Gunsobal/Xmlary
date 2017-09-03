@@ -1,5 +1,5 @@
 # Support
-Support is a collection of utility functions, some of which are used by this package.
+Support is a collection of utility public static functions.
 
 ## API
 ```php
@@ -8,28 +8,28 @@ Support is a collection of utility functions, some of which are used by this pac
 * @param array $arr Array to check for string keys
 * @return boolean
 */
-function isStringKeyed($arr)
+public static function isStringKeyed($arr)
 
 /**
-* Function to get a class' basename
+* public static Function to get a class' basename
 * @param object $class Class object
 * @return string 
 */
-function getClassBasename($class)
+public static function getClassBasename($class)
 
 /**
 * Check for empty string
 * @param string $str
 * @return boolean
 */
-function isEmptyString($str)
+public static function isEmptyString($str)
 
 /**
 * Check for json string
 * @param string $str
 * @return boolean
 */
-function isJson($str)
+public static function isJson($str)
 
 /**
 * Convert bool to string
@@ -37,7 +37,7 @@ function isJson($str)
 * @param boolean $num - True to get numeric values from bool, false for strings
 * @return mixed - Returns $b unless it's a bool, then it returns a string
 */
-function boolToString($b, $num = true)
+public static function boolToString($b, $num = true)
 
 /**
 * Xubstring to first occurrence of a substring in a string if any such substring exists
@@ -45,7 +45,7 @@ function boolToString($b, $num = true)
 * @param string $s1 - Target substring
 * @return string
 */
-function substrToFirst($str, $s1)
+public static function substrToFirst($str, $s1)
 
 /**
 * Xubstring to last occurrence of a substring in a string if any such substring exists
@@ -53,7 +53,7 @@ function substrToFirst($str, $s1)
 * @param string $s1 - Target substring
 * @return string
 */
-function substrToLast($str, $s1)
+public static function substrToLast($str, $s1)
 
 /**
 * Compare XML strings
@@ -61,5 +61,5 @@ function substrToLast($str, $s1)
 * @param string $s2
 * @return boolean
 */
-function compareXMLStrings($s1, $s2){
+public static function compareXMLStrings($s1, $s2){
 ```

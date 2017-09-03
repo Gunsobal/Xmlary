@@ -220,16 +220,45 @@ Will get converted to
 </Drinks>
 ```
 
-__NOTE:__ Xmlify will not render an XML node when processing array of arrays. To get an empty element with attributes, add an empty element after the attributes array.
+__NOTE:__ Xmlify will not render an XML node when processing array of arrays for attribute arrays. To get an empty element with attributes, add an empty element after the attributes array.
+__NOTE:__ When handling an array of associative arrays, an attribute key would overwrite the external attributes array, if any, for that element only.
 
 ## API
 Xmlify provides access to 3 static functions
 
-### Function xmlify
-The xmlify function will recursively build a DOMDocument object and return it so the script calling this function can further manipulate the object such as validate against an .xsd schema. You can use DOMDocument's saveXML() function to get your XML string. The xmlify function requires the array as a parameter and optional parameters for the document version and encoding.
+### Xmlify
+The xmlify function will recursively build a DOMDocument object and return it so the script calling this function can further manipulate the object such as validate against an .xsd schema. You can use DOMDocument's saveXML() function to get your XML string. 
 
-### Function stringify
+```php
+/**
+* @param array $arr An array to convert into XML
+* @param string $version Version head on the XML document
+* @param string $encoding Encoding head on the XML document
+* @return \DOMDocument
+*/
+public static function xmlify($arr, $version = "1.0", $encoding = "UTF-8"){
+```
+
+### Stringify
 The stringify function uses string concatenation to generate a string with XML markup. It will not contain the <?xml version="1.0"?> head, like the xmlify function, as its original purpose was to generate XML which would get nested within other XML documents. It accepts the associative array as a required parameter along with an optional parameter to specify the starting tab indentation, default 0.
 
-### Function htmlify
+```php
+/**
+* @param array $arr An array to convert into XML string
+* @param int $depth Tab indentation preceding first node
+* @return string
+*/
+public static function stringify($arr, $depth = 0){
+```
+
+### Htmlify
 This is just a wrapper around calling htmlspecialchars on the stringify function output. It will return the same string as the stringify except with html entitites where applicable. It accepts the same paramters as stringify.
+
+```php
+/**
+* @param array $arr An array to convert into XML string
+* @param int $depth Tab indentation preceding first node
+* @return string
+*/
+public static function htmlify($arr, $formatted = true, $depth = 0)
+```

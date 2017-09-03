@@ -4,6 +4,11 @@ namespace Gunsobal\Xmlary;
 
 use Gunsobal\Xmlary\XmlaryException;
 
+/**
+ * Support is a collection of utility public static functions.
+ *
+ * @author Gunnar Baldursson
+ */
 class Support
 {
 	/**

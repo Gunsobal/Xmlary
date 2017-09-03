@@ -77,7 +77,7 @@ class Xmlify
 			$xml .= self::isEmptyElement($insert) ? "$tabs<$key$attr />\n" : "$tabs<$key$attr>\n$insert$tabs</$key>\n"; // Build <key>longstring</key>
 		} else { // Handle value is array but not keyed, multiple keys with same name
 			foreach ($value as $v){
-				if (is_array($v) && array_key_exists('@attributes', $v) && count($v) === 1){ // If attributes exist, set attr string value or overwrite if it has already been set
+				if (self::isAttributesArray($v)){ // If attributes exist, set attr string value or overwrite if it has already been set
 					$attr = self::stringifyAttributes($v['@attributes']);
 					continue;
 				}
@@ -99,7 +99,7 @@ class Xmlify
 		if (Support::isStringKeyed($value)){ // handle assoc array
 			if (array_key_exists('@attributes', $value)){
 				$attr = $value['@attributes'];
-				unset($value['@attributes']); // Get attributes key, then delete it
+				unset($value['@attributes']);
 			} 
 			$newparent = self::buildDOMNode($doc, $parent, $key, $attr);
 			foreach ($value as $k => $v){
@@ -107,7 +107,7 @@ class Xmlify
 			}
 		} else {
 			foreach ($value as $v){
-				if (is_array($v) && array_key_exists('@attributes', $v) && count($v) === 1){ // Set attr or overwrite it
+				if (self::isAttributesArray($v)){ // Set attr or overwrite it
 					$attr = $v['@attributes'];
 					continue;
 				}
@@ -128,9 +128,8 @@ class Xmlify
 			self::validateAttribute($a, $v);
             $v = Support::boolToString($v);
             $node->setAttribute($a, $v);
-        }
-        if ($parent === null)   $doc->appendChild($node);
-        else 					$parent->appendChild($node);
+		}
+		$parent === null ? $doc->appendChild($node) : $parent->appendChild($node);
         return $node;
 	}
 
@@ -140,6 +139,10 @@ class Xmlify
 	 */
 	protected static function isEmptyElement($el){
 		return is_array($el) ? !count($el) : Support::isEmptyString($el);
+	}
+
+	protected static function isAttributesArray($a){
+		return is_array($a) && array_key_exists('@attributes', $a) && count($a) === 1;
 	}
 
 	/**
