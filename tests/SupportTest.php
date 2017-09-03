@@ -4,11 +4,11 @@ namespace Gunsobal\Xmlary;
 
 use PHPUnit_Framework_TestCase;
 
+/**
+ * Unit tests for Support
+ */
 class SupportTest extends PHPUnit_Framework_TestCase
 {
-	/**
-     * Checking for syntax error in Support
-     */
     public function testIsThereAnySyntaxError(){
         $x = new Support;
         $this->assertTrue(is_object($x));

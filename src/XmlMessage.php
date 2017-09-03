@@ -16,30 +16,30 @@ use Gunsobal\Xmlary\Support;
  */
 class XmlMessage
 {
+    /** @var array $_data The array containing the data passed in through a constructor **/
+    private $_data;
+
+    /** @var string $_version Version head of XML document, defaults to 1.0 **/
+    private $_version;
+
+    /** @var string $_encoding Encoding head of XML document, defaults to UTF-8 **/
+    private $_encoding;
+    
     /** @var string $_name The name of the root element in the xml message, defaults to class name **/
     protected $_name;
 
     /** @var string $_build The name of the derivative class' build method which returns an array for xmlify, defaults to build **/
     protected $_build;
 
-    /** @var array $_data The array containing the data passed in through a constructor **/
-    protected $_data;
-
-    /** @var string $_version Version head of XML document, defaults to 1.9 **/
-    protected $_version;
-
-    /** @var string $_encoding Encoding head of XML document, defaults to UTF-8 **/
-    protected $_encoding;
-
     /** @var array $_required Overwrite in derivative class in a way that each key in $_required is a requied field in the message, with its value being a custom error message **/
     protected $_required = [];
 
     public function __construct($arr = []){
         $this->_data = $arr;
+        $this->_version = '1.0';
+        $this->_encoding = 'UTF-8';
         if (!$this->_name) $this->_name = Support::getClassBasename($this); // Set this class' name
         if (!$this->_build) $this->_build = 'build'; // Set this class' build function. default build
-        if (!$this->_version) $this->_version = '1.0'; // Defaults for version and encoding
-        if (!$this->_encoding) $this->_encoding = 'UTF-8';
         $this->validate($this->_required);
     }
 

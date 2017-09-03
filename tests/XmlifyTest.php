@@ -10,9 +10,6 @@ use Gunsobal\Xmlary\Support;
  */
 class XmlifyTest extends PHPUnit_Framework_TestCase
 {
-    /**
-     * Checking for syntax error in Xmlify
-     */
     public function testIsThereAnySyntaxError(){
         $x = new Xmlify;
         $this->assertTrue(is_object($x));

@@ -93,7 +93,7 @@ class Support
 	 * @return boolean
 	 */
 	static public function compareXMLStrings($s1, $s2){
-		$strip = '/\s+/';
+        $strip = '/\s+/';
 		$c1 = preg_replace($strip, '', simplexml_load_string(trim($s1))->asXML());
 		$c2 = preg_replace($strip, '', simplexml_load_string(trim($s2))->asXML());
 		return $c1 == $c2;
