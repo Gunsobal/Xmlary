@@ -27,6 +27,7 @@ class Xmlify
 		if (Support::isStringKeyed($arr)){
 			return self::recursiveStringify(key($arr), reset($arr), $depth);
 		}
+
 		throw new XmlifyException("Invalid arguments for stringiy function, must be string keyed array");
 	}
 
@@ -44,7 +45,8 @@ class Xmlify
 			$xml->formatOutput = true;
 			
             return self::recursiveXmlify(key($arr), reset($arr), $xml);
-        }
+		}
+		
         throw new XmlifyException("Invalid argument for xmlify function, must be string keyed array");
     }
 
@@ -89,6 +91,7 @@ class Xmlify
 				$xml .= self::recursiveStringify($key, $v, $depth, $attr);
 			}
 		}
+
 		return $xml;
 	}
 
@@ -116,7 +119,8 @@ class Xmlify
 			}
 		} else {
 			foreach ($value as $v){
-				if (self::isAttributesArray($v)){ // Set attr or overwrite it
+				// Set attr or overwrite it
+				if (self::isAttributesArray($v)){
 					$attr = $v['@attributes'];
 					continue;
 				}
@@ -124,6 +128,7 @@ class Xmlify
 				self::recursiveXmlify($key, $v, $doc, $parent, $attr);
 			}
 		}
+
 		return $doc;
 	}
 
@@ -164,6 +169,7 @@ class Xmlify
 			self::validateAttribute($a, $b); 
 			$str .= " $a=\"" . Support::boolToString($b) . "\"";
 		}
+		
 		return $str;
 	}
 
@@ -174,6 +180,7 @@ class Xmlify
 		if (! preg_match('/^(?!xml.*)[a-z\_][\w\-\:\.]*$/i', $tag)) {
 			throw new XmlifyException("Invalid tag name: '$tag'");
 		}
+
 		return true;
     }
 
@@ -184,9 +191,11 @@ class Xmlify
 		if (! preg_match('/^[a-z\_][\w\-\:\.]*$/i', $attr)){
 			throw new XmlifyException("Invalid attribute name: '$attr'");
 		}
+
 		if (is_array($value)){
             throw new XmlifyException("Invalid attribute value for '$attr', can't be array"); 
 		}
+
         return true;
 	}
 	
