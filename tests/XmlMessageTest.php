@@ -11,7 +11,7 @@ use Gunsobal\Xmlary\Support;
 class XmlMessageTest extends PHPUnit_Framework_TestCase
 {
     public function testIsThereAnySyntaxError(){
-        $x = new XmlMessage([]);
+        $x = new AMessage([]);
         $this->assertTrue(is_object($x));
         unset($x);
         unset($t);
@@ -65,6 +65,13 @@ class XmlMessageTest extends PHPUnit_Framework_TestCase
         $this->assertTrue(is_a($s, 'DOMDocument'));
         $this->assertTrue(Support::compareXMLStrings($s->saveXML(), '<?xml version="1.0" encoding="UTF-8" ?><NewMessage><Nested>Val</Nested></NewMessage>'));
     }
+
+    /**
+     * @expectedException Gunsobal\Xmlary\XmlMessageException
+     */
+    public function testNoBuildMethod(){
+        $x = new FailMessage([]);
+    }
 }
 
 class TestMessage extends XmlMessage
@@ -84,4 +91,9 @@ class AMessage extends XmlMessage
     public function buildfunc(){
         return ['Nested' => 'Val'];
     }
+}
+
+class FailMessage extends XmlMessage
+{
+    protected $_build = 'buildfunc';
 }
