@@ -52,7 +52,7 @@ Will get converted to
 </Message>
 ```
 
-__NOTE:__ Boolean values will get converted to 1 or 0
+* __NOTE:__ Boolean values will get converted to 1 or 0
 
 __Example 2__
 XML can have multiple nodes with the same name and since keys must be unique, XML of this type can be generated using regular arrays.
@@ -105,7 +105,7 @@ Will get converted to
 </Order>
 ```
 
-__NOTE:__ Keys pointing to an empty array or an empty string will generate an empty XML element
+* __NOTE:__ Keys pointing to an empty array or an empty string will generate an empty XML element
 
 __Example 3__
 Xmlify additionally features support for attributes by declaring an @attributes key which has an associative array as its value where each key/value pair is turned into key="value" attributes.
@@ -220,8 +220,8 @@ Will get converted to
 </Drinks>
 ```
 
-__NOTE:__ Xmlify will not render an XML node when processing array of arrays for attribute arrays. To get an empty element with attributes, add an empty element after the attributes array.
-__NOTE:__ When handling an array of associative arrays, an attribute key would overwrite the external attributes array, if any, for that element only.
+* __NOTE:__ Xmlify will not render an XML node when processing array of arrays for attribute arrays. To get an empty element with attributes, add an empty element after the attributes array.
+* __NOTE:__ When handling an array of associative arrays, an attribute key would overwrite the external attributes array, if any, for that element only.
 
 ## API
 Xmlify provides access to 3 static functions
