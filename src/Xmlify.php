@@ -26,9 +26,8 @@ class Xmlify
 	public static function stringify($arr, $depth = 0){
 		if (Support::isStringKeyed($arr)){
 			return self::recursiveStringify(key($arr), reset($arr), $depth);
-		} else {
-			throw new XmlifyException("Invalid arguments for stringiy function, must be string keyed array");
 		}
+		throw new XmlifyException("Invalid arguments for stringiy function, must be string keyed array");
 	}
 
 	/**
@@ -42,7 +41,8 @@ class Xmlify
         if (Support::isStringKeyed($arr)){
             $xml = new DOMDocument( $version, $encoding);
             $xml->preserveWhiteSpace = false;
-            $xml->formatOutput = true;
+			$xml->formatOutput = true;
+			
             return self::recursiveXmlify(key($arr), reset($arr), $xml);
         }
         throw new XmlifyException("Invalid argument for xmlify function, must be string keyed array");
@@ -63,24 +63,29 @@ class Xmlify
      */
 	protected static function recursiveStringify($key, $value, $depth, $attr = ''){
 		self::validateTag($key);
-		$tabs = str_repeat("\t", $depth); // Create tab indentation
-		if (self::isSingleElement($value)){ // Base case
-			return self::buildStringNode($key, $attr, $value, $tabs);
-		}
+		
+		$tabs = str_repeat("\t", $depth);
+		
+		if (self::isSingleElement($value)) return self::buildStringNode($key, $attr, $value, $tabs);
+
 		$xml = ''; // Return string
-		if (Support::isStringKeyed($value)){ // Handle nested associative array
-			if (array_key_exists('@attributes', $value)) $attr = self::buildAttributesString($value['@attributes']); // Set attributes string if any attributes are defined
+		if (Support::isStringKeyed($value)){
+			if (array_key_exists('@attributes', $value)) $attr = self::buildAttributesString($value['@attributes']);
+			
 			$insert = ''; // String of nested elements
-			foreach ($value as $k => $v){ // Build nested element string
+			foreach ($value as $k => $v){ 
 				if ($k !== '@attributes') $insert .= self::recursiveStringify($k, $v, $depth + 1);
 			}
+			
 			$xml .= self::buildStringNode($key, $attr, $insert, $tabs, true);
-		} else { // Handle value is array but not keyed, multiple keys with same name
+		} else { 
 			foreach ($value as $v){
-				if (self::isAttributesArray($v)){ // If attributes exist, set attr string value or overwrite if it has already been set
+				// If attributes exist, set attr string value or overwrite if it has already been set
+				if (self::isAttributesArray($v)){
 					$attr = self::buildAttributesString($v['@attributes']);
 					continue;
 				}
+				
 				$xml .= self::recursiveStringify($key, $v, $depth, $attr);
 			}
 		}
@@ -92,16 +97,20 @@ class Xmlify
 	 */
 	protected static function recursiveXmlify($key, $value, $doc, $parent = null, $attr = []){
 		self::validateTag($key);
+
 		if (self::isSingleElement($value)){ // base case
 			self::buildDOMNode($doc, $parent, $key, $attr, $value);
 			return $doc;
 		}
-		if (Support::isStringKeyed($value)){ // handle assoc array
+
+		if (Support::isStringKeyed($value)){
 			if (array_key_exists('@attributes', $value)){
 				$attr = $value['@attributes'];
 				unset($value['@attributes']);
 			} 
+
 			$newparent = self::buildDOMNode($doc, $parent, $key, $attr);
+
 			foreach ($value as $k => $v){
 				self::recursiveXmlify($k, $v, $doc, $newparent);
 			}
@@ -111,6 +120,7 @@ class Xmlify
 					$attr = $v['@attributes'];
 					continue;
 				}
+
 				self::recursiveXmlify($key, $v, $doc, $parent, $attr);
 			}
 		}
@@ -122,13 +132,17 @@ class Xmlify
 	 */
 	protected static function buildDOMNode($doc, $parent, $name, $attrs, $value = null){
 		$value = self::isEmptyElement($value) ? null : Support::boolToString($value);
-        $node = ($value === null ? $doc->createElement($name) : $doc->createElement($name, $value));
+
+		$node = ($value === null ? $doc->createElement($name) : $doc->createElement($name, $value));
+		
         foreach ($attrs as $a => $v){
 			self::validateAttribute($a, $v);
             $v = Support::boolToString($v);
             $node->setAttribute($a, $v);
 		}
+
 		$parent === null ? $doc->appendChild($node) : $parent->appendChild($node);
+
         return $node;
 	}
 
@@ -136,33 +150,9 @@ class Xmlify
 	 * Build xml node as string, line to true if value should be on a seperate line
 	 */
 	protected static function buildStringNode($key, $attrs, $value, $tabs, $nested = false){
-		if (self::isEmptyElement($value)){
-			return "$tabs<$key$attrs />\n";
-		} else {
-			return "$tabs<$key$attrs>" . ($nested ? "\n" : '') . Support::boolToString($value) . ($nested ? $tabs : '') . "</$key>\n";
-		}
-	}
+		if (self::isEmptyElement($value)) return "$tabs<$key$attrs />\n";
 
-
-	/**
-	 * Check if element is an empty value
-	 */
-	protected static function isEmptyElement($el){
-		return is_array($el) ? !count($el) : Support::isEmptyString($el);
-	}
-
-	/**
-	 * Check if an array is an array of attributes only
-	 */
-	protected static function isAttributesArray($a){
-		return is_array($a) && array_key_exists('@attributes', $a) && count($a) === 1;
-	}
-
-	/**
-	 * Check if an element is a single element, returns true for empty array.
-	 */
-	protected static function isSingleElement($el){
-		return !is_array($el) || !count($el);
+		return "$tabs<$key$attrs>" . ($nested ? "\n" : '') . Support::boolToString($value) . ($nested ? $tabs : '') . "</$key>\n";
 	}
 
 	/**
@@ -198,5 +188,26 @@ class Xmlify
             throw new XmlifyException("Invalid attribute value for '$attr', can't be array"); 
 		}
         return true;
-    }
+	}
+	
+	/**
+	 * Check if element is an empty value
+	 */
+	protected static function isEmptyElement($el){
+		return is_array($el) ? !count($el) : Support::isEmptyString($el);
+	}
+
+	/**
+	 * Check if an array is an array of attributes only
+	 */
+	protected static function isAttributesArray($a){
+		return is_array($a) && array_key_exists('@attributes', $a) && count($a) === 1;
+	}
+
+	/**
+	 * Check if an element is a single element, returns true for empty array.
+	 */
+	protected static function isSingleElement($el){
+		return !is_array($el) || !count($el);
+	}
 }

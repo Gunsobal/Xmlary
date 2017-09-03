@@ -38,11 +38,14 @@ class XmlMessage
         $this->_data = $arr;
         $this->_version = '1.0';
         $this->_encoding = 'UTF-8';
-        if (!$this->_name || !is_string($this->_name)) $this->_name = Support::getClassBasename($this); // Set this class' name
-        if (!$this->_build || !is_string($this->_build)) $this->_build = 'build'; // Set this class' build function. default build
+        
+        if (!$this->_name || !is_string($this->_name)) $this->_name = Support::getClassBasename($this);
+        if (!$this->_build || !is_string($this->_build)) $this->_build = 'build';
+
         if (!method_exists($this, $this->_build)){
             throw new XmlMessageException("[$this->_name] The build method '$this->_build' is not defined");
         }
+
         if (Support::isStringKeyed($this->_required)) $this->validate($this->_required);
     }
 
