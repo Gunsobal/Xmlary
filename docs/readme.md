@@ -13,3 +13,4 @@
 * Updated documenation.
 * Merged my PHP Utils library with this library under Support class.
 * Version, encoding and data properties in XmlMessage are now private.
+* XmlMessage now throws an exception if the build method doesn't exist.

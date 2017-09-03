@@ -41,7 +41,7 @@ class XmlMessage
         if (!$this->_name) $this->_name = Support::getClassBasename($this); // Set this class' name
         if (!$this->_build) $this->_build = 'build'; // Set this class' build function. default build
         if (!method_exists($this, $this->_build)){
-            throw new XmlMessageException("[$this->_name] The build method is not defined");
+            throw new XmlMessageException("[$this->_name] The build method '$this->_build' is not defined");
         }
         $this->validate($this->_required);
     }
