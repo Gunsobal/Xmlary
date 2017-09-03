@@ -14,5 +14,5 @@
 * Version, encoding and data properties in XmlMessage are now private.
 * XmlMessage now throws an exception if the build method doesn't exist.
 * XmlMessage now checks if required property is in correct format.
-* XmlMessage now checks if name property is a string.
+* XmlMessage now checks if name and build properties are strings and only overwrites default values if they are.
 * Updated documenation.
