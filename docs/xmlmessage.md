@@ -128,7 +128,7 @@ Classes inheriting the XmlMessage class will get set up with a factory pattern a
 
 ```php
 /**
-* Convert this message to XML markup style string
+* Convert this message to XML markup style string with no XML header
 * @return string
 */ 
 public function toString()

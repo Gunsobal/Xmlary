@@ -52,7 +52,7 @@ class XmlMessage
     }
 
     /**
-     * Convert this message to XML markup style string
+     * Convert this message to XML markup style string with no XML header
      * @return string
      */ 
     public function toString(){
