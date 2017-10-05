@@ -47,17 +47,6 @@ class Support
     }
 
     /**
-    * Check for json string
-    * @param string $str
-    * @return boolean
-    */
-    static public function isJson($str){
-        if (is_numeric($str) || !is_string($str)) return false;
-        json_decode($str);
-        return (json_last_error() == JSON_ERROR_NONE);
-    }
-
-    /**
      * Convert bool to string
      * @param mixed $b - variable to convert from bool to string
      * @param boolean $num - True to get numeric values from bool, false for strings
@@ -66,30 +55,6 @@ class Support
     static public function boolToString($b, $num = true){
         return (is_bool($b) ? ($num ? ($b ? '1' : '0') : ($b ? 'true' : 'false')) : $b);
     }
-
-    /**
-     * Substring to first occurrence of a substring in a string if any such substring exists
-     * @param string $str - String to cut
-     * @param string $s1 - Target substring
-     * @return string
-     */
-    static public function substrToFirst($str, $s1){
-        $i = strpos($str, $s1);
-		if ($i !== false) return substr($str, 0, $i);
-		return $str;
-    }
-
-    /**
-     * Substring to last occurrence of a substring in a string if any such substring exists
-     * @param string $str - String to cut
-     * @param string $s1 - Target substring
-     * @return string
-     */
-    static public function substrToLast($str, $s1){
-        $i = strrpos($str, $s1);
-		if ($i !== false) return substr($str, 0, $i);
-		return $str;
-	}
 	
 	/**
 	 * Compare XML strings
