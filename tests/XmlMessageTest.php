@@ -14,7 +14,6 @@ class XmlMessageTest extends PHPUnit_Framework_TestCase
         $x = new AMessage([]);
         $this->assertTrue(is_object($x));
         unset($x);
-        unset($t);
     }
 
     /**
@@ -65,13 +64,6 @@ class XmlMessageTest extends PHPUnit_Framework_TestCase
         $this->assertTrue(is_a($s, 'DOMDocument'));
         $this->assertTrue(Support::compareXMLStrings($s->saveXML(), '<?xml version="1.0" encoding="UTF-8" ?><NewMessage><Nested>Val</Nested></NewMessage>'));
     }
-
-    /**
-     * @expectedException Gunsobal\Xmlary\XmlMessageException
-     */
-    public function testNoBuildMethod(){
-        $x = new FailMessage([]);
-    }
 }
 
 class TestMessage extends XmlMessage
@@ -86,14 +78,8 @@ class TestMessage extends XmlMessage
 class AMessage extends XmlMessage
 {
     protected $_name = 'NewMessage';
-    protected $_build = 'buildfunc';
 
-    public function buildfunc(){
+    public function build(){
         return ['Nested' => 'Val'];
     }
-}
-
-class FailMessage extends XmlMessage
-{
-    protected $_build = 'buildfunc';
 }

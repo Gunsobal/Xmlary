@@ -2,10 +2,9 @@
 
 namespace Gunsobal\Xmlary;
 
-include_once 'XmlaryException.php';
-
 use Gunsobal\Xmlary\Xmlify;
 use Gunsobal\Xmlary\Support;
+use Gunsobal\Xmlary\XmlaryException;
 
 /**
  * This class provides a base upon which to build new outgoing XML messages. It is built following
@@ -14,7 +13,7 @@ use Gunsobal\Xmlary\Support;
  *
  * @author Gunnar Baldursson
  */
-class XmlMessage
+abstract class XmlMessage
 {
     /** @var array $_data The array containing the data passed in through a constructor **/
     private $_data;
@@ -28,9 +27,6 @@ class XmlMessage
     /** @var string $_name The name of the root element in the xml message, defaults to class name **/
     protected $_name;
 
-    /** @var string $_build The name of the class' build method which returns an array for xmlify, default: build **/
-    protected $_build;
-
     /** @var array $_required Each key is a required field in the message and its value is a custom error message **/
     protected $_required = [];
 
@@ -38,15 +34,9 @@ class XmlMessage
         $this->_data = $arr;
         $this->_version = '1.0';
         $this->_encoding = 'UTF-8';
-        
-        if (!$this->_name || !is_string($this->_name)) $this->_name = Support::getClassBasename($this);
-        if (!$this->_build || !is_string($this->_build)) $this->_build = 'build';
+        $this->_name = $this->_name ?? Support::getClassBasename($this);
 
-        if (!method_exists($this, $this->_build)){
-            throw new XmlMessageException("[$this->_name] The build method '$this->_build' is not defined");
-        }
-
-        if (Support::isStringKeyed($this->_required)) $this->validate($this->_required);
+        $this->validate($this->_required);
     }
 
     public function __get($field){
@@ -62,7 +52,7 @@ class XmlMessage
      * @return string
      */ 
     public function toString(){
-        return Xmlify::stringify([$this->_name => $this->{$this->_build}()]); //$this->_{$this->_build}() syntax to call this class' build function
+        return Xmlify::stringify([$this->_name => $this->build()]);
     }
 
     /**
@@ -70,7 +60,7 @@ class XmlMessage
      * @return string Valid XML
      */ 
     public function toXml(){
-        return Xmlify::xmlify([$this->_name => $this->{$this->_build}()], $this->_version, $this->_encoding)->saveXml();
+        return Xmlify::xmlify([$this->_name => $this->build()], $this->_version, $this->_encoding)->saveXml();
     }
 
     /**
@@ -78,7 +68,7 @@ class XmlMessage
      * @return \DOMDocument
      */
      public function toDOM(){
-         return Xmlify::xmlify([$this->_name => $this->{$this->_build}()], $this->_version, $this->_encoding);
+         return Xmlify::xmlify([$this->_name => $this->build()], $this->_version, $this->_encoding);
      }
 
     /**
@@ -90,8 +80,14 @@ class XmlMessage
             try {
                 $this->$field;
             } catch (XmlMessageException $e){
-                throw new XmlMessageException("[$this->_name] The key '$field' is required. " . (is_string($message) ? $message : 'No message string provided.'));
+                throw new XmlMessageException("[$this->_name] The key '$field' is required. $message");
             }
         }
     }
+
+    /**
+     * Define an array which will be passed to Xmlify
+     * @return array
+     */
+    protected abstract function build();
 }

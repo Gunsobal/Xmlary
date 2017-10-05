@@ -15,14 +15,23 @@ class SupportTest extends PHPUnit_Framework_TestCase
         unset($x);
 	}
 	
-	public function testIsStringKeyed(){
-		$this->assertTrue(Support::isStringKeyed([]));
-		$this->assertTrue(Support::isStringKeyed(['a' => 'b']));
-		$this->assertTrue(Support::isStringKeyed(['a' => ['b' => 'c']]));
+	public function testIsStringKeyedIsFalseForNonArrays(){
+		$this->assertFalse(Support::isStringKeyed(0));
+	}
+	
+	public function testStringKeyedIsFalseForRegularArrays(){
 		$this->assertFalse(Support::isStringKeyed(['a','b']));
 		$this->assertFalse(Support::isStringKeyed(['a',['b' => 'x']]));
 		$this->assertFalse(Support::isStringKeyed(['a']));
-		$this->assertFalse(Support::isStringKeyed(0));
+	}
+
+	public function testStringKeyedIsTrueForEmpty(){
+		$this->assertTrue(Support::isStringKeyed([]));
+	}
+	
+	public function testStringKeyedIsTrueForAssocArrays(){
+		$this->assertTrue(Support::isStringKeyed(['a' => 'b']));
+		$this->assertTrue(Support::isStringKeyed(['a' => ['b', 'c']]));
 	}
 
 	public function testGetClassBasename(){
@@ -37,45 +46,79 @@ class SupportTest extends PHPUnit_Framework_TestCase
 		Support::getClassBasename(0);
 	}
 
-	public function testIsEmptyString(){
+	public function testIsEmptyStringIsFalseForZero(){
 		$this->assertFalse(Support::isEmptyString(0));
+	}
+
+	public function testIsEmptyStringIsFalseForBooleanFalse(){
 		$this->assertFalse(Support::isEmptyString(false));
+	}
+
+	public function testIsEmptyStringIsFalseForSpacesOnlyString(){
 		$this->assertFalse(Support::isEmptyString(' '));
+	}
+
+	public function testIsEmptyStringIsTrueWhenNullOrEmpty(){
 		$this->assertTrue(Support::isEmptyString(null));
 		$this->assertTrue(Support::isEmptyString(''));
 	}
 
-	public function testIsJson(){
+	public function testIsJsonIsFalseForNumerics(){
 		$this->assertFalse(Support::isJson('1234'));
 		$this->assertFalse(Support::isJson(1234));
+	}
+
+	public function testIsJsonIsFalseForEmptyString(){
 		$this->assertFalse(Support::isJson(''));
+		$this->assertFalse(Support::isJson(null));
+	}
+
+	public function testIsJsonTrueWhenJsonFormat(){
 		$this->assertTrue(Support::isJson('{}'));
 		$this->assertTrue(Support::isJson('{"a":"b"}'));
 	}
 
-	public function testBoolToString(){
-		$this->assertTrue(Support::boolToString(false) == '0');
-		$this->assertTrue(Support::boolToString(true) == '1');
-		$this->assertTrue(Support::boolToString(false, false) == 'false');
-		$this->assertTrue(Support::boolToString(true, false) == 'true');
+	public function testBoolToStringDoesntChangeNonBooleanValues(){
 		$this->assertTrue(Support::boolToString(1) == 1);
 		$this->assertTrue(Support::boolToString('1') == '1');
 	}
+	
+	public function testBoolToStringConvertsToZeroAndOne(){
+		$this->assertTrue(Support::boolToString(false) == '0');
+		$this->assertTrue(Support::boolToString(true) == '1');
+	}
+	
+	public function testBoolToStringConvertsToStringWithOptionalFlag(){
+		$this->assertTrue(Support::boolToString(false, false) == 'false');
+		$this->assertTrue(Support::boolToString(true, false) == 'true');
+	}
 
-	public function testSubstrToFirst(){
-		$this->assertTrue(Support::substrToFirst('a b', ' ') == 'a');
-		$this->assertTrue(Support::substrToFirst('a ba', ' ba') == 'a');
-		$this->assertTrue(Support::substrToFirst('a b a', ' ') == 'a');
+	public function testSubstrToFirstReturnsStringIfLengthOneAndInvalidDelimiter(){
 		$this->assertTrue(Support::substrToFirst('a', ' ') == 'a');
+	}
+
+	public function testSubstrToFirstReturnsEmptyStringIfLengthOneAndDelimiterIsString(){
 		$this->assertTrue(Support::substrToFirst('a', 'a') == '');
 	}
 
-	public function testSubstrToLast(){
+	public function testSubstrToFirstReturnsStringUpToADelimiter(){
+		$this->assertTrue(Support::substrToFirst('a b', ' ') == 'a');
+		$this->assertTrue(Support::substrToFirst('a ba', ' ba') == 'a');
+		$this->assertTrue(Support::substrToFirst('a b a', ' ') == 'a');
+	}
+
+	public function testSubstrToLastReturnsStringIfLengthOneAndInvalidDelimiter(){
+		$this->assertTrue(Support::substrToLast('a', ' ') == 'a');
+	}
+
+	public function testSubstrToLastReturnsEmptyStringIfLengthOneAndDelimiterIsString(){
+		$this->assertTrue(Support::substrToLast('a', 'a') == '');
+	}
+
+	public function testSubstrToLastReturnsStringToFirstOccurrenceOfDelimiterFromEndOfString(){
 		$this->assertTrue(Support::substrToLast('a b', ' ') == 'a');
 		$this->assertTrue(Support::substrToLast('a ba', ' ba') == 'a');
 		$this->assertTrue(Support::substrToLast('a b a', ' ') == 'a b');
-		$this->assertTrue(Support::substrToLast('a', ' ') == 'a');
-		$this->assertTrue(Support::substrToLast('a', 'a') == '');
 	}
 
 	/**
