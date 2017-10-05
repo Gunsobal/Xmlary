@@ -119,7 +119,7 @@ protected $_required = [
 ];
 ```
 
-* __NOTE:__ There are more properties you can define to change the behaviour of your XmlMessage class, see __API__ section.
+* __NOTE:__ You can also define a `protected $_name` property to change the name of the root element of the XmlMessage.
 
 ## API
 Classes inheriting the XmlMessage class will get set up with a factory pattern as well as some properties to control the configuration of the XML generation. Any settings properties defined in the base class will have an underscore prefix in their name.
@@ -150,9 +150,6 @@ public function toDOM()
 ```php
 /** @var string $_name The name of the root element in the xml message, defaults to class name **/
 protected $_name;
-
-/** @var string $_build The name of the class' build method which returns an array for xmlify, default: build **/
-protected $_build;
 
 /** @var array $_required Each key is a required field in the message and its value is a custom error message **/
 protected $_required = [];

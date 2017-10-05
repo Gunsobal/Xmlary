@@ -16,3 +16,9 @@
 * XmlMessage now checks if required property is in correct format.
 * XmlMessage now checks if name and build properties are strings and only overwrites default values if they are.
 * Updated documenation.
+
+### v2.0.1 - 10.05.2017
+* Made XmlMessage an abstract class as it should've been from the start.
+* Removed build property from XmlMessage and made build an abstract function that must be implemented to adhere to the template pattern.
+* Refactored support tests to smaller units.
+* Updated docs to reflect slight change to XmlMessage.
