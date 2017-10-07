@@ -67,8 +67,8 @@ $arr = [
                 ''
             ]
         ],
-        'Deserts' => [
-            'Desert' => [
+        'Desserts' => [
+            'Dessert' => [
                 [
                     'Type' => 'Cake',
                     'Flavour' => 'Delicious'
@@ -92,16 +92,16 @@ Will get converted to
     <Drink>Coke</Drink>
     <Drink/>
   </Drinks>
-  <Deserts>
-    <Desert>
+  <Desserts>
+    <Dessert>
       <Type>Cake</Type>
       <Flavour>Delicious</Flavour>
-    </Desert>
-    <Desert>
+    </Dessert>
+    <Dessert>
       <Type>IceCream</Type>
       <Color>Pink</Color>
-    </Desert>
-  </Deserts>
+    </Dessert>
+  </Desserts>
 </Order>
 ```
 
