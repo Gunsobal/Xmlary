@@ -260,5 +260,5 @@ This is just a wrapper around calling htmlspecialchars on the stringify function
 * @param int $depth Tab indentation preceding first node
 * @return string
 */
-public static function htmlify($arr, $formatted = true, $depth = 0)
+public static function htmlify($arr, $depth = 0)
 ```
