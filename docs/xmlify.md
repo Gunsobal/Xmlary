@@ -3,7 +3,7 @@ Xmlify is a class which recursively converts nested associative arrays into XML.
 
 The class needs the array to follow a few conventions in order to properly generate XML. Failure to follow these conventions in such a way it would produce invalid XML will throw an [XmlifyException](xmlaryexception.md).
 
-The associative array to be converted into XML needs to be structured like an XML document, where there's initially a single root element with however many nested child elements. See __Example__ section for more details on how to build the associative array.
+The associative array to be converted into XML needs to be structured like an XML document, where there's initially a single root element with however many nested child elements. See __Examples__ section for more details on how to build the associative array.
 
 XML tags and attributes need to be valid according to [XML standards](https://www.w3schools.com/xml/xml_syntax.asp)
 
