@@ -22,3 +22,4 @@
 * Removed build property from XmlMessage and made build an abstract function that must be implemented to adhere to the template pattern.
 * Refactored support tests to smaller units.
 * Updated docs to reflect slight change to XmlMessage.
+* Removed unused functions from support class.

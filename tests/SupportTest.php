@@ -63,21 +63,6 @@ class SupportTest extends PHPUnit_Framework_TestCase
 		$this->assertTrue(Support::isEmptyString(''));
 	}
 
-	public function testIsJsonIsFalseForNumerics(){
-		$this->assertFalse(Support::isJson('1234'));
-		$this->assertFalse(Support::isJson(1234));
-	}
-
-	public function testIsJsonIsFalseForEmptyString(){
-		$this->assertFalse(Support::isJson(''));
-		$this->assertFalse(Support::isJson(null));
-	}
-
-	public function testIsJsonTrueWhenJsonFormat(){
-		$this->assertTrue(Support::isJson('{}'));
-		$this->assertTrue(Support::isJson('{"a":"b"}'));
-	}
-
 	public function testBoolToStringDoesntChangeNonBooleanValues(){
 		$this->assertTrue(Support::boolToString(1) == 1);
 		$this->assertTrue(Support::boolToString('1') == '1');
@@ -92,35 +77,6 @@ class SupportTest extends PHPUnit_Framework_TestCase
 		$this->assertTrue(Support::boolToString(false, false) == 'false');
 		$this->assertTrue(Support::boolToString(true, false) == 'true');
 	}
-
-	public function testSubstrToFirstReturnsStringIfLengthOneAndInvalidDelimiter(){
-		$this->assertTrue(Support::substrToFirst('a', ' ') == 'a');
-	}
-
-	public function testSubstrToFirstReturnsEmptyStringIfLengthOneAndDelimiterIsString(){
-		$this->assertTrue(Support::substrToFirst('a', 'a') == '');
-	}
-
-	public function testSubstrToFirstReturnsStringUpToADelimiter(){
-		$this->assertTrue(Support::substrToFirst('a b', ' ') == 'a');
-		$this->assertTrue(Support::substrToFirst('a ba', ' ba') == 'a');
-		$this->assertTrue(Support::substrToFirst('a b a', ' ') == 'a');
-	}
-
-	public function testSubstrToLastReturnsStringIfLengthOneAndInvalidDelimiter(){
-		$this->assertTrue(Support::substrToLast('a', ' ') == 'a');
-	}
-
-	public function testSubstrToLastReturnsEmptyStringIfLengthOneAndDelimiterIsString(){
-		$this->assertTrue(Support::substrToLast('a', 'a') == '');
-	}
-
-	public function testSubstrToLastReturnsStringToFirstOccurrenceOfDelimiterFromEndOfString(){
-		$this->assertTrue(Support::substrToLast('a b', ' ') == 'a');
-		$this->assertTrue(Support::substrToLast('a ba', ' ba') == 'a');
-		$this->assertTrue(Support::substrToLast('a b a', ' ') == 'a b');
-	}
-
 	/**
 	 * @dataProvider xmlProvider
 	 */
