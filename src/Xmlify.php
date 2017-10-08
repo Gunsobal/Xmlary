@@ -28,7 +28,7 @@ class Xmlify
 			return self::recursiveStringify(key($arr), reset($arr), $depth);
 		}
 
-		throw new XmlifyException("Invalid arguments for stringiy function, must be string keyed array");
+		throw new XmlifyException("Invalid arguments for stringify function, must be string keyed array");
 	}
 
 	/**
@@ -56,7 +56,7 @@ class Xmlify
      * @param int $depth Tab indentation preceding first node, default 0
      * @return string
      */
-    public static function htmlify($arr, $formatted = true, $depth = 0){
+    public static function htmlify($arr, $depth = 0){
        return htmlspecialchars(self::stringify($arr, $depth));
     }
 
