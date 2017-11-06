@@ -6,7 +6,9 @@ use Gunsobal\Xmlary\Support;
 use PHPUnit_Framework_TestCase;
 
 /**
- * Unit tests for XmlMessage
+ * Unit tests for Gunsobal\Xmlary\XmlMessage
+ * 
+ * @author Gunnar Örn Baldursson
  */
 class XmlMessageTest extends PHPUnit_Framework_TestCase
 {

@@ -7,12 +7,13 @@ use InvalidArgumentException;
 /**
  * Gunsobal\Xmlary\Support is a collection of utility public static functions.
  *
- * @author Gunnar Baldursson
+ * @author Gunnar Örn Baldursson
  */
 class Support
 {
 	/**
      * Check if an array is string keyed
+     * 
      * @param array $arr Array to check for string keys
      * @return boolean
      */

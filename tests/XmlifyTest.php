@@ -6,7 +6,9 @@ use Gunsobal\Xmlary\Support;
 use PHPUnit_Framework_TestCase;
 
 /**
- * Unit tests for Xmlify
+ * Unit tests for Gunsobal\Xmlary\Xmlify
+ * 
+ * @author Gunnar Örn Baldursson
  */
 class XmlifyTest extends PHPUnit_Framework_TestCase
 {
@@ -130,6 +132,7 @@ class XmlifyTest extends PHPUnit_Framework_TestCase
 
     /**
      * Gets XML strings from resources folder
+     * 
      * @param string $filename
      * @return array
      */
@@ -140,6 +143,7 @@ class XmlifyTest extends PHPUnit_Framework_TestCase
 
     /**
      * Returns array of Xmlify test arrays
+     * 
      * @return array
      */
     private function makeXmlifyExampleArrays(){

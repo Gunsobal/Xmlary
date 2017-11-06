@@ -1,7 +1,6 @@
 # Documentation
 * [Xmlify](xmlify.md)
 * [XmlMessage](xmlmessage.md)
-* [XmlaryException](xmlexception.md)
 * [Support](support.md)
 
 # Changelog
@@ -23,3 +22,8 @@
 * Refactored support tests to smaller units.
 * Updated docs to reflect slight change to XmlMessage.
 * Removed unused functions from support class.
+
+### v3.0.0 - 11.06.2017
+* Removed custom exceptions in favour of PHP exceptions
+* Deleted docs about exceptions
+* Updated comment blocks for phpdoc conventions

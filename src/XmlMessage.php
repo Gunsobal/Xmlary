@@ -12,7 +12,7 @@ use Gunsobal\Xmlary\Support;
  * Factory pattern conventions and uses underscores for its protected properties. In derivative 
  * classes, simply provide a build method returning an array suitable for Xmlify.
  *
- * @author Gunnar Baldursson
+ * @author Gunnar Örn Baldursson
  */
 abstract class XmlMessage
 {
@@ -31,6 +31,12 @@ abstract class XmlMessage
     /** @var array $_required Each key is a required field in the message and its value is a custom error message **/
     protected $_required = [];
 
+    /**
+     * Constructor to initialize factory pattern and some default values
+     * 
+     * @param array $arr
+     * @throws \BadMethodCallException
+     */
     public function __construct($arr = []){
         $this->_data = $arr;
         $this->_version = '1.0';
@@ -40,6 +46,13 @@ abstract class XmlMessage
         $this->validate($this->_required);
     }
 
+    /**
+     * Factory pattern get
+     * 
+     * @param string $field
+     * @throws \OutOfRangeException
+     * @return mixed
+     */
     public function __get($field){
         if (array_key_exists($field, $this->_data)){
             return $this->_data[$field];
@@ -50,6 +63,10 @@ abstract class XmlMessage
 
     /**
      * Convert this message to XML markup style string with no XML header
+     * 
+     * @see Gunsobal\Xmlify\stringify()
+     * @throws \BadMethodCallException
+     * @throws \UnexpectedValueException
      * @return string
      */ 
     public function toString(){
@@ -58,6 +75,10 @@ abstract class XmlMessage
 
     /**
      * Convert this message to XML string
+     * 
+     * @see Gunsobal\Xmlify\xmlify()
+     * @throws \BadMethodCallException
+	 * @throws \UnexpectedValueException
      * @return string Valid XML
      */ 
     public function toXml(){
@@ -66,6 +87,10 @@ abstract class XmlMessage
 
     /**
      * Convert this message to DOMDocument
+     * 
+     * @see Gunsobal\Xmlify\xmlify()
+     * @throws \BadMethodCallException
+	 * @throws \UnexpectedValueException
      * @return \DOMDocument
      */
      public function toDOM(){
@@ -74,7 +99,10 @@ abstract class XmlMessage
 
     /**
      * Verify fields exist in $_data property
+     * 
      * @param array $fields - Assoc array where each key represents a required field and value represents an error message
+     * @throws \BadMethodCallException
+     * @return void
      */
     protected function validate($fields){
         foreach ($fields as $field => $message){
@@ -88,6 +116,7 @@ abstract class XmlMessage
 
     /**
      * Define an array which will be passed to Xmlify
+     * 
      * @return array
      */
     protected abstract function build();

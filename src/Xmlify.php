@@ -13,14 +13,17 @@ use UnexpectedValueException;
  * indents when generating a markup string. It's defensive against invalid parameters and validates
  * xml tags according to standards.
  *
- * @author Gunnar Baldursson
+ * @author Gunnar Örn Baldursson
  */
 class Xmlify
 {
 	/**
      * Convert associative array to string
+	 * 
      * @param array $arr An array to convert into XML string
      * @param int $depth Tab indentation preceding first node, default 0
+	 * @throws \BadMethodCallException
+	 * @throws \UnexpectedValueException
      * @return string
      */
 	public static function stringify($arr, $depth = 0){
@@ -33,9 +36,12 @@ class Xmlify
 
 	/**
      * Convert associative array to DOMDocument
+	 * 
      * @param array $arr An array to convert into XML
      * @param string $version Version head on the XML document, default 1.0
      * @param string $encoding Encoding head on the XML document, default UTF-8
+	 * @throws \BadMethodCallException
+	 * @throws \UnexpectedValueException
      * @return \DOMDocument
      */
     public static function xmlify($arr, $version = "1.0", $encoding = "UTF-8"){
@@ -52,8 +58,12 @@ class Xmlify
 
 	/**
      * Convert associative array to string with html special chars
+	 * 
      * @param array $arr An array to convert into XML string
      * @param int $depth Tab indentation preceding first node, default 0
+	 * @see Gunsobal\Xmlary\Xmlify::stringify()
+	 * @throws \BadMethodCallException
+	 * @throws \UnexpectedValueException
      * @return string
      */
     public static function htmlify($arr, $depth = 0){
@@ -62,6 +72,13 @@ class Xmlify
 
 	/**
      * Recursively build xml markup style string from associative array
+	 * 
+	 * @param string $key
+	 * @param mixed $value
+	 * @param int $depth
+	 * @param string $attr
+	 * @throws \UnexpectedValueException
+	 * @return string
      */
 	protected static function recursiveStringify($key, $value, $depth, $attr = ''){
 		self::validateTag($key);
@@ -96,7 +113,15 @@ class Xmlify
 	}
 
 	/**
-	 * Recursively build DOMDocument from associative array, follows same flow as stringifyRecursive
+	 * Recursively build DOMDocument from associative array, essentially same algorithm as stringify
+	 * 
+	 * @param string $key
+	 * @param mixed $value
+	 * @param \DOMDocument $doc
+	 * @param \DOMNode|null $parent
+	 * @param array $attr
+	 * @throws \UnexpectedValueException
+	 * @return \DOMDocument
 	 */
 	protected static function recursiveXmlify($key, $value, $doc, $parent = null, $attr = []){
 		self::validateTag($key);
@@ -134,6 +159,14 @@ class Xmlify
 
 	/**
 	 * Build DOM node
+	 * 
+	 * @param \DOMDocument $doc
+	 * @param \DOMDocument|\DOMNode $parent
+	 * @param string $name
+	 * @param array $attrs
+	 * @param mixed $value
+	 * @throws \UnexpectedValueException
+	 * @return \DOMNode
 	 */
 	protected static function buildDOMNode($doc, $parent, $name, $attrs, $value = null){
 		$value = self::isEmptyElement($value) ? null : Support::boolToString($value);
@@ -153,6 +186,13 @@ class Xmlify
 
 	/**
 	 * Build xml node as string, line to true if value should be on a seperate line
+	 * 
+	 * @param string $key
+	 * @param string $attrs
+	 * @param mixed $value
+	 * @param string $tabs
+	 * @param boolean $nested
+	 * @return string
 	 */
 	protected static function buildStringNode($key, $attrs, $value, $tabs, $nested = false){
 		if (self::isEmptyElement($value)) return "$tabs<$key$attrs />\n";
@@ -162,6 +202,10 @@ class Xmlify
 
 	/**
 	 * Convert attributes array to string if valid, else throw exception
+	 * 
+	 * @param array $attrs
+	 * @throws \UnexpectedValueException
+	 * @return string
 	 */
 	protected static function buildAttributesString($attrs){
 		$str = '';
@@ -175,6 +219,10 @@ class Xmlify
 
 	/**
      * Validate XML tag
+	 * 
+	 * @param string $tag
+	 * @throws \UnexpectedValueException
+	 * @return boolean
      */
     protected static function validateTag($tag){
 		if (! preg_match('/^(?!xml.*)[a-z\_][\w\-\:\.]*$/i', $tag)) {
@@ -186,6 +234,11 @@ class Xmlify
 
     /**
      * Pattern for attributes
+	 * 
+	 * @param string $attr
+	 * @param mixed $value
+	 * @throws \UnexpectedValueException
+	 * @return boolean
      */
     protected static function validateAttribute($attr, $value){
 		if (! preg_match('/^[a-z\_][\w\-\:\.]*$/i', $attr)){
@@ -201,6 +254,9 @@ class Xmlify
 	
 	/**
 	 * Check if element is an empty value
+	 * 
+	 * @param mixed $el
+	 * @return boolean
 	 */
 	protected static function isEmptyElement($el){
 		return is_array($el) ? !count($el) : Support::isEmptyString($el);
@@ -208,6 +264,9 @@ class Xmlify
 
 	/**
 	 * Check if an array is an array of attributes only
+	 * 
+	 * @param mixed $a
+	 * @return boolean
 	 */
 	protected static function isAttributesArray($a){
 		return is_array($a) && array_key_exists('@attributes', $a) && count($a) === 1;
@@ -215,6 +274,9 @@ class Xmlify
 
 	/**
 	 * Check if an element is a single element, returns true for empty array.
+	 * 
+	 * @param mixed $el
+	 * @return boolean
 	 */
 	protected static function isSingleElement($el){
 		return !is_array($el) || !count($el);

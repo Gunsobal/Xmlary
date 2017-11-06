@@ -5,7 +5,9 @@ namespace Gunsobal\Xmlary;
 use PHPUnit_Framework_TestCase;
 
 /**
- * Unit tests for Support
+ * Unit tests for Gunsobal\Xmlary\Support
+ * 
+ * @author Gunnar Örn Baldursson
  */
 class SupportTest extends PHPUnit_Framework_TestCase
 {
