@@ -3,14 +3,14 @@
 namespace Gunsobal\Xmlary;
 
 use Gunsobal\Xmlary\Support;
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Unit tests for Gunsobal\Xmlary\Xmlify
  * 
  * @author Gunnar Örn Baldursson
  */
-class XmlifyTest extends PHPUnit_Framework_TestCase
+class XmlifyTest extends TestCase
 {
     public function testIsThereAnySyntaxError(){
         $x = new Xmlify;

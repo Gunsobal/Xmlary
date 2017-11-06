@@ -2,14 +2,14 @@
 
 namespace Gunsobal\Xmlary;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Unit tests for Gunsobal\Xmlary\Support
  * 
  * @author Gunnar Örn Baldursson
  */
-class SupportTest extends PHPUnit_Framework_TestCase
+class SupportTest extends TestCase
 {
     public function testIsThereAnySyntaxError(){
         $x = new Support;

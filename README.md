@@ -42,6 +42,9 @@ Composer package is based on the [template](http://www.darwinbiler.com/creating-
 * Removed custom exceptions in favour of PHP exceptions.
 * Deleted docs about exceptions.
 * Updated comment blocks for phpdoc conventions.
+* No longer provides support for PHP versions less than 7
+* Updated PHPUnit devDependency
+* Added PHPDocumentor devDependency
 
 ## Issues
 If you encounter any bugs or issues please report them here on GitHub so I can look into them.

@@ -3,14 +3,14 @@
 namespace Gunsobal\Xmlary;
 
 use Gunsobal\Xmlary\Support;
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Unit tests for Gunsobal\Xmlary\XmlMessage
  * 
  * @author Gunnar Örn Baldursson
  */
-class XmlMessageTest extends PHPUnit_Framework_TestCase
+class XmlMessageTest extends TestCase
 {
     public function testIsThereAnySyntaxError(){
         $x = new AMessage([]);
