@@ -2,8 +2,8 @@
 
 namespace Gunsobal\Xmlary;
 
-use PHPUnit_Framework_TestCase;
 use Gunsobal\Xmlary\Support;
+use PHPUnit_Framework_TestCase;
 
 /**
  * Unit tests for XmlMessage
@@ -17,10 +17,18 @@ class XmlMessageTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException Gunsobal\Xmlary\XmlMessageException
+     * @expectedException BadMethodCallException
      */
     public function testMissingRequiredFields(){
         $x = new TestMessage([]);
+    }
+
+    /**
+     * @expectedException OutOfRangeException
+     */
+    public function testCallingPropertyThatDoesntExist(){
+        $x = new TestMessage(['example' => 'foo']);
+        $x->foo();
     }
 
     public function testToStringAutomated(){
@@ -72,6 +80,10 @@ class TestMessage extends XmlMessage
 
     public function build(){
         return ['Nested' => $this->example];
+    }
+
+    public function foo(){
+        $this->foo;
     }
 }
 

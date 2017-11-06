@@ -2,20 +2,20 @@
 
 namespace Gunsobal\Xmlary;
 
-use Gunsobal\Xmlary\XmlaryException;
+use InvalidArgumentException;
 
 /**
- * Support is a collection of utility public static functions.
+ * Gunsobal\Xmlary\Support is a collection of utility public static functions.
  *
  * @author Gunnar Baldursson
  */
 class Support
 {
 	/**
-    * Check if an array is string keyed
-    * @param array $arr Array to check for string keys
-    * @return boolean
-    */
+     * Check if an array is string keyed
+     * @param array $arr Array to check for string keys
+     * @return boolean
+     */
     static public function isStringKeyed($arr){
         if (!is_array($arr)) return false;
         foreach ($arr as $key => $value){
@@ -27,30 +27,34 @@ class Support
 	}
 	
 	/**
-    * Get a class' basename
-    * @param object $class Class object
-    * @return string 
-    */
+     * Get a class' basename
+     * 
+     * @param object $class Class object
+     * @throws \InvalidArgumentException
+     * @return string
+     */
     static public function getClassBasename($class){
-        if (!is_object($class)) throw new XmlaryException("[Support] $class must be an object");
+        if (!is_object($class)) throw new InvalidArgumentException("$class must be an object");
         $names = explode('\\', get_class($class));
         return $names[count($names) - 1];
 	}
 	
 	/**
-    * Check for empty string
-    * @param string $str
-    * @return boolean
-    */
+     * Check for empty string
+     * 
+     * @param string $str
+     * @return boolean
+     */
     static public function isEmptyString($str){
         return ($str === null || $str === '');
     }
 
     /**
      * Convert bool to string
+     * 
      * @param mixed $b - variable to convert from bool to string
      * @param boolean $num - True to get numeric values from bool, false for strings
-     * @return mixed - Returns $b unless it's a bool, then it returns a string
+     * @return mixed Returns $b unless it's a bool, then it returns a string
      */
     static public function boolToString($b, $num = true){
         return (is_bool($b) ? ($num ? ($b ? '1' : '0') : ($b ? 'true' : 'false')) : $b);
@@ -58,6 +62,7 @@ class Support
 	
 	/**
 	 * Compare XML strings
+     * 
 	 * @param string $s1
 	 * @param string $s2
 	 * @return boolean

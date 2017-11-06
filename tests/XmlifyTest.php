@@ -2,8 +2,8 @@
 
 namespace Gunsobal\Xmlary;
 
-use PHPUnit_Framework_TestCase;
 use Gunsobal\Xmlary\Support;
+use PHPUnit_Framework_TestCase;
 
 /**
  * Unit tests for Xmlify
@@ -17,7 +17,7 @@ class XmlifyTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException Gunsobal\Xmlary\XmlifyException
+     * @expectedException BadMethodCallException
      */
     public function testXmlifyArgumentFail(){
         Xmlify::xmlify(0);
@@ -25,56 +25,56 @@ class XmlifyTest extends PHPUnit_Framework_TestCase
 
     
     /**
-     * @expectedException Gunsobal\Xmlary\XmlifyException
+     * @expectedException BadMethodCallException
      */
     public function testHtmlifyArgumentFail(){
         Xmlify::htmlify(0);
     }
 
     /**
-     * @expectedException Gunsobal\Xmlary\XmlifyException
+     * @expectedException BadMethodCallException
      */
     public function testStringifyArgumentFail(){
         Xmlify::stringify(0);
     }
 
     /**
-     * @expectedException Gunsobal\Xmlary\XmlifyException
+     * @expectedException UnexpectedValueException
      */
     public function testXmlifyInvalidElement(){
         Xmlify::xmlify(['???' => 'a']);
     }
 
     /**
-     * @expectedException Gunsobal\Xmlary\XmlifyException
+     * @expectedException UnexpectedValueException
      */
     public function testStringifyInvalidElement(){
         Xmlify::stringify(['xml' => 'a']);
     }
 
     /**
-     * @expectedException Gunsobal\Xmlary\XmlifyException
+     * @expectedException UnexpectedValueException
      */
     public function testHtmlifyInvalidElement(){
         Xmlify::htmlify(['!"#$' => 'a']);
     }
 
     /**
-     * @expectedException Gunsobal\Xmlary\XmlifyException
+     * @expectedException UnexpectedValueException
      */
     public function testXmlifyInvalidAttribute(){
         Xmlify::xmlify(['valid' => ['@attributes' => ['0' => 'a']]]);
     }
 
     /**
-     * @expectedException Gunsobal\Xmlary\XmlifyException
+     * @expectedException UnexpectedValueException
      */
     public function testStringifyInvalidAttribute(){
         Xmlify::stringify(['valid' => ['@attributes' => ['??' => 'a']]]);
     }
 
     /**
-     * @expectedException Gunsobal\Xmlary\XmlifyException
+     * @expectedException UnexpectedValueException
      */
     public function testHtmlifyInvalidAttribute(){
         Xmlify::htmlify(['valid' => ['@attributes' => ['#"$' => 'a']]]);

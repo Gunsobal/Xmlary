@@ -2,9 +2,10 @@
 
 namespace Gunsobal\Xmlary;
 
+use OutOfRangeException;
+use BadMethodCallException;
 use Gunsobal\Xmlary\Xmlify;
 use Gunsobal\Xmlary\Support;
-use Gunsobal\Xmlary\XmlaryException;
 
 /**
  * This class provides a base upon which to build new outgoing XML messages. It is built following
@@ -43,7 +44,7 @@ abstract class XmlMessage
         if (array_key_exists($field, $this->_data)){
             return $this->_data[$field];
         } else {
-            throw new XmlMessageException("[$this->_name] Requested field '$field' was not found");
+            throw new OutOfRangeException("[$this->_name] Requested field '$field' was not found");
         }
     }
 
@@ -79,8 +80,8 @@ abstract class XmlMessage
         foreach ($fields as $field => $message){
             try {
                 $this->$field;
-            } catch (XmlMessageException $e){
-                throw new XmlMessageException("[$this->_name] The key '$field' is required. $message");
+            } catch (OutOfRangeException $e){
+                throw new BadMethodCallException("The key '$field' is required. $message");
             }
         }
     }

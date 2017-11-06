@@ -40,7 +40,7 @@ class SupportTest extends PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * @expectedException Gunsobal\Xmlary\XmlaryException
+	 * @expectedException InvalidArgumentException
 	 */
 	public function testGetClassBasenameFail(){
 		Support::getClassBasename(0);
