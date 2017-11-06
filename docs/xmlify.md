@@ -231,12 +231,16 @@ The xmlify function will recursively build a DOMDocument object and return it so
 
 ```php
 /**
-* @param array $arr An array to convert into XML
-* @param string $version Version head on the XML document
-* @param string $encoding Encoding head on the XML document
-* @return \DOMDocument
-*/
-public static function xmlify($arr, $version = "1.0", $encoding = "UTF-8"){
+ * Convert associative array to DOMDocument
+ * 
+ * @param array $arr An array to convert into XML
+ * @param string $version Version head on the XML document, default 1.0
+ * @param string $encoding Encoding head on the XML document, default UTF-8
+ * @throws \BadMethodCallException
+ * @throws \UnexpectedValueException
+ * @return \DOMDocument
+ */
+public static function xmlify($arr, $version = "1.0", $encoding = "UTF-8")
 ```
 
 ### Stringify
@@ -244,11 +248,15 @@ The stringify function uses string concatenation to generate a string with XML m
 
 ```php
 /**
-* @param array $arr An array to convert into XML string
-* @param int $depth Tab indentation preceding first node
-* @return string
-*/
-public static function stringify($arr, $depth = 0){
+ * Convert associative array to string
+ * 
+ * @param array $arr An array to convert into XML string
+ * @param int $depth Tab indentation preceding first node, default 0
+ * @throws \BadMethodCallException
+ * @throws \UnexpectedValueException
+ * @return string
+ */
+public static function stringify($arr, $depth = 0)
 ```
 
 ### Htmlify
@@ -256,9 +264,14 @@ This is just a wrapper around calling htmlspecialchars on the stringify function
 
 ```php
 /**
-* @param array $arr An array to convert into XML string
-* @param int $depth Tab indentation preceding first node
-* @return string
-*/
-public static function htmlify($arr, $depth = 0)
+ * Convert associative array to DOMDocument
+ * 
+ * @param array $arr An array to convert into XML
+ * @param string $version Version head on the XML document, default 1.0
+ * @param string $encoding Encoding head on the XML document, default UTF-8
+ * @throws \BadMethodCallException
+ * @throws \UnexpectedValueException
+ * @return \DOMDocument
+ */
+public static function xmlify($arr, $version = "1.0", $encoding = "UTF-8")
 ```

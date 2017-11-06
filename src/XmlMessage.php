@@ -41,7 +41,7 @@ abstract class XmlMessage
         $this->_data = $arr;
         $this->_version = '1.0';
         $this->_encoding = 'UTF-8';
-        $this->_name = isset($this->_name) ? $this->_name : Support::getClassBasename($this);
+        $this->_name = $this->_name ?? Support::getClassBasename($this);
 
         $this->validate($this->_required);
     }

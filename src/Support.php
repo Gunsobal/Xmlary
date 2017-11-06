@@ -37,7 +37,7 @@ class Support
     static public function getClassBasename($class){
         if (!is_object($class)) throw new InvalidArgumentException("$class must be an object");
         $names = explode('\\', get_class($class));
-        return $names[count($names) - 1];
+        return end($names);
 	}
 	
 	/**

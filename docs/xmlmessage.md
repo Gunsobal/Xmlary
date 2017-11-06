@@ -128,21 +128,33 @@ Classes inheriting the XmlMessage class will get set up with a factory pattern a
 
 ```php
 /**
-* Convert this message to XML markup style string with no XML header
-* @return string
-*/ 
+ * Convert this message to XML markup style string with no XML header
+ * 
+ * @see Gunsobal\Xmlify\stringify()
+ * @throws \BadMethodCallException
+ * @throws \UnexpectedValueException
+ * @return string
+ */ 
 public function toString()
 
 /**
-* Convert this message to XML string
-* @return string Valid XML
-*/ 
+ * Convert this message to XML string
+ * 
+ * @see Gunsobal\Xmlify\xmlify()
+ * @throws \BadMethodCallException
+ * @throws \UnexpectedValueException
+ * @return string Valid XML
+ */ 
 public function toXml()
 
 /**
-* Convert this message to DOMDocument
-* @return \DOMDocument
-*/
+ * Convert this message to DOMDocument
+ * 
+ * @see Gunsobal\Xmlify\xmlify()
+ * @throws \BadMethodCallException
+ * @throws \UnexpectedValueException
+ * @return \DOMDocument
+ */
 public function toDOM()
 ```
 
