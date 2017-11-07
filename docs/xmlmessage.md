@@ -119,7 +119,7 @@ protected $_required = [
 ];
 ```
 
-* __NOTE:__ You can also define a `protected $_name` property to change the name of the root element of the XmlMessage.
+* __NOTE:__ You can also define more properties to change the XmlMessage, see __Configurable Properties__ section.
 
 ## API
 Classes inheriting the XmlMessage class will get set up with a factory pattern as well as some properties to control the configuration of the XML generation. Any settings properties defined in the base class will have an underscore prefix in their name.
@@ -153,16 +153,10 @@ protected $_name;
 
 /** @var array $_required Each key is a required field in the message and its value is a custom error message **/
 protected $_required = [];
-```
-
-### Reserved properties
-```php
-/** @var array $_data The array containing the data passed in through the constructor **/
-private $_data;
 
 /** @var string $_version Version head of XML document, defaults to 1.0 **/
-private $_version;
+protected $_version;
 
 /** @var string $_encoding Encoding head of XML document, defaults to UTF-8 **/
-private $_encoding;
+protected $_encoding;
 ```

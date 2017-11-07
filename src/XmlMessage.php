@@ -19,10 +19,10 @@ abstract class XmlMessage
     private $_data;
 
     /** @var string $_version Version head of XML document, defaults to 1.0 **/
-    private $_version;
+    protected $_version;
 
     /** @var string $_encoding Encoding head of XML document, defaults to UTF-8 **/
-    private $_encoding;
+    protected $_encoding;
     
     /** @var string $_name The name of the root element in the xml message, defaults to class name **/
     protected $_name;
@@ -32,9 +32,9 @@ abstract class XmlMessage
 
     public function __construct($arr = []){
         $this->_data = $arr;
-        $this->_version = '1.0';
-        $this->_encoding = 'UTF-8';
-        $this->_name = $this->_name ?? Support::getClassBasename($this);
+        $this->_version = isset($this->_version) ? $this->_version : '1.0';
+        $this->_encoding = isset($this->_encoding) ? $this->_encoding : 'UTF-8';
+        $this->_name = isset($this->_name) ? $this->_name : Support::getClassBasename($this);
 
         $this->validate($this->_required);
     }
