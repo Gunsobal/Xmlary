@@ -2,12 +2,15 @@
 ![travis](https://travis-ci.org/Gunsobal/Xmlary.svg?branch=master)
 
 ## Introduction
-A collection of helper classes I've made to simplify my workflow when using lots of XML with php and extracted into a composer package. The primary function of the package is to generate XML from associative arrays and provide a convenient platform for encapsulating that XML generation in its own object. 
+A collection of helper classes I've made to simplify my workflow when using lots of XML with php and extracted into a composer package. The primary function of the package is to generate XML from associative arrays and provide a convenient platform for encapsulating that XML generation in its own object. All classes in this package will be in the Gunsobal\Xmlary namespace.
 
-Install the package into your project by running "composer require gunsobal/xmlary", or download the source code here on GitHub, and any class included in this package will be in the Gunsobal\Xmlary namespace.
+Install the package into your project via composer or download the source code here on GitHub.
+
+```bash
+composer install gunsobal/xmlary
+```
 
 ## Documentation
-You can review the documentation [here on GitHub](https://github.com/Gunsobal/Xmlary/tree/master/docs#readme).
 * [Xmlify](docs/xmlify.md)
 * [XmlMessage](docs/xmlmessage.md)
 * [Support](docs/support.md)
