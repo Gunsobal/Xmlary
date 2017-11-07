@@ -74,6 +74,13 @@ class XmlMessageTest extends TestCase
         $this->assertTrue(is_a($s, 'DOMDocument'));
         $this->assertTrue(Support::compareXMLStrings($s->saveXML(), '<?xml version="1.0" encoding="UTF-8" ?><NewMessage><Nested>Val</Nested></NewMessage>'));
     }
+
+    public function testEncodingBeingConfigurable(){
+        $x = new OMessage([]);
+        $s = $x->toDOM();
+        $this->assertTrue(is_a($s, 'DOMDocument'));
+        $this->assertTrue(Support::compareXMLStrings($s->saveXML(), '<?xml version="1.0" encoding="ISO-8859-1" ?><OMessage><foo>bar</foo></OMessage>'));
+    }
 }
 
 class TestMessage extends XmlMessage
@@ -95,5 +102,15 @@ class AMessage extends XmlMessage
 
     public function build(){
         return ['Nested' => 'Val'];
+    }
+}
+
+class OMessage extends XmlMessage
+{
+    protected $_encoding = 'ISO-8859-1';
+    protected $_version = "1.0";
+
+    protected function build(){
+        return ['foo' => 'bar'];
     }
 }
