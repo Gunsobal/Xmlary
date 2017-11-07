@@ -137,7 +137,7 @@ class XmlifyTest extends TestCase
      * @return array
      */
     private function loadXMLStrings($filename){
-        $file = file_get_contents(__DIR__ . '\\..\\resources\\' . $filename);
+        $file = file_get_contents(join(DIRECTORY_SEPARATOR, [__DIR__, '..', 'resources', $filename]));
         return explode('%%', $file);
     }
 
