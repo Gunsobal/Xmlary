@@ -39,8 +39,8 @@ abstract class XmlMessage
      */
     public function __construct($arr = []){
         $this->_data = $arr;
-        $this->_version = '1.0';
-        $this->_encoding = 'UTF-8';
+        $this->_version = $this->_version ?? '1.0';
+        $this->_encoding = $this->_encoding ?? 'UTF-8';
         $this->_name = $this->_name ?? Support::getClassBasename($this);
 
         $this->validate($this->_required);
