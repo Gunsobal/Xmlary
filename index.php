@@ -21,4 +21,7 @@ class Test extends XmlMessage
 
 $t = new Test(['foo' => 'bar']);
 
-$t->foo();
+$d = new DOMDocument("1.1", "ISO-8859-1");
+$n = $d->createElement('foo', 'bar');
+$d->appendChild($n);
+echo $d->saveXML();

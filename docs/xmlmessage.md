@@ -160,6 +160,12 @@ public function toDOM()
 
 ### Configurable properties
 ```php
+/** @var string $_version Version head of XML document, defaults to 1.0 **/
+protected $_version;
+
+/** @var string $_encoding Encoding head of XML document, defaults to UTF-8 **/
+protected $_encoding;
+
 /** @var string $_name The name of the root element in the xml message, defaults to class name **/
 protected $_name;
 
