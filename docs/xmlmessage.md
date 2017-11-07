@@ -119,7 +119,7 @@ protected $_required = [
 ];
 ```
 
-* __NOTE:__ You can also define a `protected $_name` property to change the name of the root element of the XmlMessage.
+* __NOTE:__ You can define more properties to change the XmlMessage, see __Configurable properties__ section.
 
 ## API
 Classes inheriting the XmlMessage class will get set up with a factory pattern as well as some properties to control the configuration of the XML generation. Any settings properties defined in the base class will have an underscore prefix in their name.
