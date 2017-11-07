@@ -166,15 +166,3 @@ protected $_name;
 /** @var array $_required Each key is a required field in the message and its value is a custom error message **/
 protected $_required = [];
 ```
-
-### Reserved properties
-```php
-/** @var array $_data The array containing the data passed in through the constructor **/
-private $_data;
-
-/** @var string $_version Version head of XML document, defaults to 1.0 **/
-private $_version;
-
-/** @var string $_encoding Encoding head of XML document, defaults to UTF-8 **/
-private $_encoding;
-```
