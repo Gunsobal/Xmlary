@@ -1,4 +1,5 @@
 # Xmlary
+![travis](https://travis-ci.org/Gunsobal/Xmlary.svg?branch=master)
 
 ## Introduction
 A collection of helper classes I've made to simplify my workflow when using lots of XML with php and extracted into a composer package. The primary function of the package is to generate XML from associative arrays and provide a convenient platform for encapsulating that XML generation in its own object. 
@@ -44,7 +45,7 @@ Composer package is based on the [template](http://www.darwinbiler.com/creating-
 * Updated comment blocks for phpdoc conventions.
 * No longer provides support for PHP versions less than 7
 * Updated PHPUnit devDependency
-* Added PHPDocumentor devDependency
+* Integrated travis-ci
 
 ## Issues
 If you encounter any bugs or issues please report them here on GitHub so I can look into them.
