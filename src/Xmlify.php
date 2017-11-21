@@ -28,7 +28,7 @@ class Xmlify
 			return self::recursiveStringify(key($arr), reset($arr), $depth);
 		}
 
-		throw new XmlifyException("Invalid arguments for stringiy function, must be string keyed array");
+		throw new XmlaryException("Invalid arguments for stringiy function, must be string keyed array");
 	}
 
 	/**
@@ -47,7 +47,7 @@ class Xmlify
             return self::recursiveXmlify(key($arr), reset($arr), $xml);
 		}
 		
-        throw new XmlifyException("Invalid argument for xmlify function, must be string keyed array");
+        throw new XmlaryException("Invalid argument for xmlify function, must be string keyed array");
     }
 
 	/**
@@ -178,7 +178,7 @@ class Xmlify
      */
     protected static function validateTag($tag){
 		if (! preg_match('/^(?!xml.*)[a-z\_][\w\-\:\.]*$/i', $tag)) {
-			throw new XmlifyException("Invalid tag name: '$tag'");
+			throw new XmlaryException("Invalid tag name: '$tag'");
 		}
 
 		return true;
@@ -189,11 +189,11 @@ class Xmlify
      */
     protected static function validateAttribute($attr, $value){
 		if (! preg_match('/^[a-z\_][\w\-\:\.]*$/i', $attr)){
-			throw new XmlifyException("Invalid attribute name: '$attr'");
+			throw new XmlaryException("Invalid attribute name: '$attr'");
 		}
 
 		if (is_array($value)){
-            throw new XmlifyException("Invalid attribute value for '$attr', can't be array"); 
+            throw new XmlaryException("Invalid attribute value for '$attr', can't be array"); 
 		}
 
         return true;

@@ -17,7 +17,7 @@ class XmlMessageTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * @expectedException Gunsobal\Xmlary\XmlMessageException
+     * @expectedException Gunsobal\Xmlary\XmlaryException
      */
     public function testMissingRequiredFields(){
         $x = new TestMessage([]);

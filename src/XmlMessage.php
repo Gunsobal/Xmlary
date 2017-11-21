@@ -43,7 +43,7 @@ abstract class XmlMessage
         if (array_key_exists($field, $this->_data)){
             return $this->_data[$field];
         } else {
-            throw new XmlMessageException("[$this->_name] Requested field '$field' was not found");
+            throw new XmlaryException("[$this->_name] Requested field '$field' was not found");
         }
     }
 
@@ -79,8 +79,8 @@ abstract class XmlMessage
         foreach ($fields as $field => $message){
             try {
                 $this->$field;
-            } catch (XmlMessageException $e){
-                throw new XmlMessageException("[$this->_name] The key '$field' is required. $message");
+            } catch (XmlaryException $e){
+                throw new XmlaryException("[$this->_name] The key '$field' is required. $message");
             }
         }
     }
