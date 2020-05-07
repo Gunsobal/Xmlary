@@ -1,6 +1,9 @@
 # Xmlary
 ![travis](https://travis-ci.org/Gunsobal/Xmlary.svg?branch=master)
 
+## Abandoned
+This package has moved to [skraeda/xmlary](https://github.com/Skraeda/xmlary). 
+
 ## Introduction
 A collection of helper classes I've made to simplify my workflow when using lots of XML with php and extracted into a composer package. The primary function of the package is to generate XML from associative arrays and provide a convenient platform for encapsulating that XML generation in its own object. All classes in this package will be in the Gunsobal\Xmlary namespace.
 
